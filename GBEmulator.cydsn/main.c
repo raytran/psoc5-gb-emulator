@@ -10,16 +10,19 @@
  * ========================================
 */
 #include <project.h>
+#include "cpu.h"
 
+#include "rom.h"
+
+Cpu cpu;
 int main()
 {
     CyGlobalIntEnable; /* Enable global interrupts. */
-
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-
+    reset_cpu(&cpu);
     for(;;)
     {
-        /* Place your application code here. */
+        tick(&cpu);
     }
 }
 

@@ -1,0 +1,964 @@
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"memory.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.reset_memory,"ax",%progbits
+  19              		.align	2
+  20              		.global	reset_memory
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	reset_memory, %function
+  24              	reset_memory:
+  25              	.LFB0:
+  26              		.file 1 ".\\memory.c"
+   1:.\memory.c    **** #include "memory.h"
+   2:.\memory.c    **** #include "rom.h"
+   3:.\memory.c    **** #include "cpu.h"
+   4:.\memory.c    **** #include "stdint.h"
+   5:.\memory.c    **** #include "stdbool.h"
+   6:.\memory.c    **** #define ROM_START 0
+   7:.\memory.c    **** #define ROM_END 0x8000
+   8:.\memory.c    **** 
+   9:.\memory.c    **** #define VRAM_START 0x8000
+  10:.\memory.c    **** #define VRAM_END 0xA000
+  11:.\memory.c    **** 
+  12:.\memory.c    **** #define WRAM_START 0xC000
+  13:.\memory.c    **** #define WRAM_END 0xE000
+  14:.\memory.c    **** 
+  15:.\memory.c    **** void reset_memory(Memory* memory){
+  27              		.loc 1 15 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32              	.LVL0:
+  16:.\memory.c    ****     int i;
+  17:.\memory.c    ****     for (i=0;i<WRAM_SIZE;i++){
+  33              		.loc 1 17 0
+  34 0000 0023     		movs	r3, #0
+  35 0002 02E0     		b	.L2
+  36              	.LVL1:
+  37              	.L3:
+  18:.\memory.c    ****         memory->wram[i] = 0;
+  38              		.loc 1 18 0 discriminator 3
+  39 0004 0022     		movs	r2, #0
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 2
+
+
+  40 0006 C254     		strb	r2, [r0, r3]
+  17:.\memory.c    ****         memory->wram[i] = 0;
+  41              		.loc 1 17 0 discriminator 3
+  42 0008 0133     		adds	r3, r3, #1
+  43              	.LVL2:
+  44              	.L2:
+  17:.\memory.c    ****         memory->wram[i] = 0;
+  45              		.loc 1 17 0 is_stmt 0 discriminator 1
+  46 000a B3F5005F 		cmp	r3, #8192
+  47 000e F9DB     		blt	.L3
+  48 0010 0023     		movs	r3, #0
+  49              	.LVL3:
+  50 0012 05E0     		b	.L4
+  51              	.LVL4:
+  52              	.L5:
+  19:.\memory.c    ****     }
+  20:.\memory.c    ****     for (i=0;i<VRAM_SIZE;i++){
+  21:.\memory.c    ****         memory->vram[i] = 0;
+  53              		.loc 1 21 0 is_stmt 1 discriminator 3
+  54 0014 C218     		adds	r2, r0, r3
+  55 0016 02F50052 		add	r2, r2, #8192
+  56 001a 0021     		movs	r1, #0
+  57 001c 1170     		strb	r1, [r2]
+  20:.\memory.c    ****         memory->vram[i] = 0;
+  58              		.loc 1 20 0 discriminator 3
+  59 001e 0133     		adds	r3, r3, #1
+  60              	.LVL5:
+  61              	.L4:
+  20:.\memory.c    ****         memory->vram[i] = 0;
+  62              		.loc 1 20 0 is_stmt 0 discriminator 1
+  63 0020 B3F5805F 		cmp	r3, #4096
+  64 0024 F6DB     		blt	.L5
+  22:.\memory.c    ****     }
+  23:.\memory.c    **** }
+  65              		.loc 1 23 0 is_stmt 1
+  66 0026 7047     		bx	lr
+  67              		.cfi_endproc
+  68              	.LFE0:
+  69              		.size	reset_memory, .-reset_memory
+  70              		.section	.text.fetch,"ax",%progbits
+  71              		.align	2
+  72              		.global	fetch
+  73              		.thumb
+  74              		.thumb_func
+  75              		.type	fetch, %function
+  76              	fetch:
+  77              	.LFB1:
+  24:.\memory.c    **** 
+  25:.\memory.c    **** 
+  26:.\memory.c    **** 
+  27:.\memory.c    **** // 	FFFF 	Interrupt Enable Flag
+  28:.\memory.c    **** //	FF80-FFFE 	Zero Page - 127 bytes
+  29:.\memory.c    **** //	FF00-FF7F 	Hardware I/O Registers
+  30:.\memory.c    **** //	FEA0-FEFF 	Unusable Memory
+  31:.\memory.c    **** //	FE00-FE9F 	OAM - Object Attribute Memory
+  32:.\memory.c    **** //	E000-FDFF 	Echo RAM - Reserved, Do Not Use
+  33:.\memory.c    **** //	D000-DFFF 	Internal RAM - Bank 1-7 (switchable - CGB only)
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 3
+
+
+  34:.\memory.c    **** //	C000-CFFF 	Internal RAM - Bank 0 (fixed)
+  35:.\memory.c    **** //	A000-BFFF 	Cartridge RAM (If Available)
+  36:.\memory.c    **** //	9C00-9FFF 	BG Map Data 2
+  37:.\memory.c    **** //	9800-9BFF 	BG Map Data 1
+  38:.\memory.c    **** //	8000-97FF 	Character RAM
+  39:.\memory.c    **** //	4000-7FFF 	Cartridge ROM - Switchable Banks 1-xx
+  40:.\memory.c    **** //	0150-3FFF 	Cartridge ROM - Bank 0 (fixed)
+  41:.\memory.c    **** //	0100-014F 	Cartridge Header Area
+  42:.\memory.c    **** //  0000-00FF 	Restart and Interrupt Vectorss
+  43:.\memory.c    **** uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
+  78              		.loc 1 43 0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82              		@ link register save eliminated.
+  83              	.LVL6:
+  44:.\memory.c    ****     if (ROM_START <= address && address < ROM_END) {
+  84              		.loc 1 44 0
+  85 0000 11F4004F 		tst	r1, #32768
+  86 0004 08D1     		bne	.L7
+  45:.\memory.c    ****         if (inBios && address < BIOS_SIZE) {
+  87              		.loc 1 45 0
+  88 0006 22B1     		cbz	r2, .L8
+  89              		.loc 1 45 0 is_stmt 0 discriminator 1
+  90 0008 FF29     		cmp	r1, #255
+  91 000a 02D8     		bhi	.L8
+  46:.\memory.c    ****             return bios[address];
+  92              		.loc 1 46 0 is_stmt 1
+  93 000c 084B     		ldr	r3, .L11
+  94 000e 585C     		ldrb	r0, [r3, r1]	@ zero_extendqisi2
+  95              	.LVL7:
+  96 0010 7047     		bx	lr
+  97              	.LVL8:
+  98              	.L8:
+  47:.\memory.c    ****         }
+  48:.\memory.c    ****         return rom[address];
+  99              		.loc 1 48 0
+ 100 0012 084B     		ldr	r3, .L11+4
+ 101 0014 585C     		ldrb	r0, [r3, r1]	@ zero_extendqisi2
+ 102              	.LVL9:
+ 103 0016 7047     		bx	lr
+ 104              	.LVL10:
+ 105              	.L7:
+  49:.\memory.c    ****     } else if (VRAM_START <= address && address < VRAM_END) {
+ 106              		.loc 1 49 0
+ 107 0018 81F40043 		eor	r3, r1, #32768
+ 108 001c B3F5005F 		cmp	r3, #8192
+ 109 0020 04D2     		bcs	.L10
+  50:.\memory.c    ****         return memory->vram[address - VRAM_START];
+ 110              		.loc 1 50 0
+ 111 0022 0144     		add	r1, r1, r0
+ 112              	.LVL11:
+ 113 0024 A1F5C041 		sub	r1, r1, #24576
+ 114 0028 0878     		ldrb	r0, [r1]	@ zero_extendqisi2
+ 115              	.LVL12:
+ 116 002a 7047     		bx	lr
+ 117              	.LVL13:
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 4
+
+
+ 118              	.L10:
+  51:.\memory.c    ****     } else if (WRAM_START <= address && address < WRAM_START) {
+  52:.\memory.c    ****         return memory->wram[address - WRAM_START];
+  53:.\memory.c    ****     }
+  54:.\memory.c    ****     // TODO add other memory access locations...
+  55:.\memory.c    ****     return 0;
+ 119              		.loc 1 55 0
+ 120 002c 0020     		movs	r0, #0
+ 121              	.LVL14:
+  56:.\memory.c    **** }...
+ 122              		.loc 1 56 0
+ 123 002e 7047     		bx	lr
+ 124              	.L12:
+ 125              		.align	2
+ 126              	.L11:
+ 127 0030 00000000 		.word	bios
+ 128 0034 00000000 		.word	rom
+ 129              		.cfi_endproc
+ 130              	.LFE1:
+ 131              		.size	fetch, .-fetch
+ 132              		.text
+ 133              	.Letext0:
+ 134              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 135              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 136              		.file 4 ".\\memory.h"
+ 137              		.file 5 ".\\rom.h"
+ 138              		.section	.debug_info,"",%progbits
+ 139              	.Ldebug_info0:
+ 140 0000 B2010000 		.4byte	0x1b2
+ 141 0004 0400     		.2byte	0x4
+ 142 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 143 000a 04       		.byte	0x4
+ 144 000b 01       		.uleb128 0x1
+ 145 000c A5000000 		.4byte	.LASF22
+ 146 0010 01       		.byte	0x1
+ 147 0011 7E010000 		.4byte	.LASF23
+ 148 0015 18000000 		.4byte	.LASF24
+ 149 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 150 001d 00000000 		.4byte	0
+ 151 0021 00000000 		.4byte	.Ldebug_line0
+ 152 0025 02       		.uleb128 0x2
+ 153 0026 01       		.byte	0x1
+ 154 0027 06       		.byte	0x6
+ 155 0028 A5010000 		.4byte	.LASF0
+ 156 002c 03       		.uleb128 0x3
+ 157 002d 0E000000 		.4byte	.LASF3
+ 158 0031 02       		.byte	0x2
+ 159 0032 1D       		.byte	0x1d
+ 160 0033 37000000 		.4byte	0x37
+ 161 0037 02       		.uleb128 0x2
+ 162 0038 01       		.byte	0x1
+ 163 0039 08       		.byte	0x8
+ 164 003a 61000000 		.4byte	.LASF1
+ 165 003e 02       		.uleb128 0x2
+ 166 003f 02       		.byte	0x2
+ 167 0040 05       		.byte	0x5
+ 168 0041 89010000 		.4byte	.LASF2
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 5
+
+
+ 169 0045 03       		.uleb128 0x3
+ 170 0046 94000000 		.4byte	.LASF4
+ 171 004a 02       		.byte	0x2
+ 172 004b 2B       		.byte	0x2b
+ 173 004c 50000000 		.4byte	0x50
+ 174 0050 02       		.uleb128 0x2
+ 175 0051 02       		.byte	0x2
+ 176 0052 07       		.byte	0x7
+ 177 0053 81000000 		.4byte	.LASF5
+ 178 0057 02       		.uleb128 0x2
+ 179 0058 04       		.byte	0x4
+ 180 0059 05       		.byte	0x5
+ 181 005a 9C010000 		.4byte	.LASF6
+ 182 005e 02       		.uleb128 0x2
+ 183 005f 04       		.byte	0x4
+ 184 0060 07       		.byte	0x7
+ 185 0061 6F000000 		.4byte	.LASF7
+ 186 0065 02       		.uleb128 0x2
+ 187 0066 08       		.byte	0x8
+ 188 0067 05       		.byte	0x5
+ 189 0068 70010000 		.4byte	.LASF8
+ 190 006c 02       		.uleb128 0x2
+ 191 006d 08       		.byte	0x8
+ 192 006e 07       		.byte	0x7
+ 193 006f 48010000 		.4byte	.LASF9
+ 194 0073 04       		.uleb128 0x4
+ 195 0074 04       		.byte	0x4
+ 196 0075 05       		.byte	0x5
+ 197 0076 696E7400 		.ascii	"int\000"
+ 198 007a 02       		.uleb128 0x2
+ 199 007b 04       		.byte	0x4
+ 200 007c 07       		.byte	0x7
+ 201 007d 33010000 		.4byte	.LASF10
+ 202 0081 03       		.uleb128 0x3
+ 203 0082 5F010000 		.4byte	.LASF11
+ 204 0086 03       		.byte	0x3
+ 205 0087 15       		.byte	0x15
+ 206 0088 2C000000 		.4byte	0x2c
+ 207 008c 03       		.uleb128 0x3
+ 208 008d 93010000 		.4byte	.LASF12
+ 209 0091 03       		.byte	0x3
+ 210 0092 21       		.byte	0x21
+ 211 0093 45000000 		.4byte	0x45
+ 212 0097 05       		.uleb128 0x5
+ 213 0098 5A000000 		.4byte	.LASF16
+ 214 009c 0030     		.2byte	0x3000
+ 215 009e 04       		.byte	0x4
+ 216 009f 07       		.byte	0x7
+ 217 00a0 BE000000 		.4byte	0xbe
+ 218 00a4 06       		.uleb128 0x6
+ 219 00a5 55000000 		.4byte	.LASF13
+ 220 00a9 04       		.byte	0x4
+ 221 00aa 08       		.byte	0x8
+ 222 00ab BE000000 		.4byte	0xbe
+ 223 00af 00       		.byte	0
+ 224 00b0 07       		.uleb128 0x7
+ 225 00b1 B1010000 		.4byte	.LASF14
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 6
+
+
+ 226 00b5 04       		.byte	0x4
+ 227 00b6 09       		.byte	0x9
+ 228 00b7 D6000000 		.4byte	0xd6
+ 229 00bb 0020     		.2byte	0x2000
+ 230 00bd 00       		.byte	0
+ 231 00be 08       		.uleb128 0x8
+ 232 00bf 81000000 		.4byte	0x81
+ 233 00c3 CF000000 		.4byte	0xcf
+ 234 00c7 09       		.uleb128 0x9
+ 235 00c8 CF000000 		.4byte	0xcf
+ 236 00cc FF1F     		.2byte	0x1fff
+ 237 00ce 00       		.byte	0
+ 238 00cf 02       		.uleb128 0x2
+ 239 00d0 04       		.byte	0x4
+ 240 00d1 07       		.byte	0x7
+ 241 00d2 67010000 		.4byte	.LASF15
+ 242 00d6 08       		.uleb128 0x8
+ 243 00d7 81000000 		.4byte	0x81
+ 244 00db E7000000 		.4byte	0xe7
+ 245 00df 09       		.uleb128 0x9
+ 246 00e0 CF000000 		.4byte	0xcf
+ 247 00e4 FF0F     		.2byte	0xfff
+ 248 00e6 00       		.byte	0
+ 249 00e7 03       		.uleb128 0x3
+ 250 00e8 5A000000 		.4byte	.LASF16
+ 251 00ec 04       		.byte	0x4
+ 252 00ed 0A       		.byte	0xa
+ 253 00ee 97000000 		.4byte	0x97
+ 254 00f2 02       		.uleb128 0x2
+ 255 00f3 01       		.byte	0x1
+ 256 00f4 02       		.byte	0x2
+ 257 00f5 B6010000 		.4byte	.LASF17
+ 258 00f9 0A       		.uleb128 0xa
+ 259 00fa 43000000 		.4byte	.LASF25
+ 260 00fe 01       		.byte	0x1
+ 261 00ff 0F       		.byte	0xf
+ 262 0100 00000000 		.4byte	.LFB0
+ 263 0104 28000000 		.4byte	.LFE0-.LFB0
+ 264 0108 01       		.uleb128 0x1
+ 265 0109 9C       		.byte	0x9c
+ 266 010a 29010000 		.4byte	0x129
+ 267 010e 0B       		.uleb128 0xb
+ 268 010f 07000000 		.4byte	.LASF18
+ 269 0113 01       		.byte	0x1
+ 270 0114 0F       		.byte	0xf
+ 271 0115 29010000 		.4byte	0x129
+ 272 0119 01       		.uleb128 0x1
+ 273 011a 50       		.byte	0x50
+ 274 011b 0C       		.uleb128 0xc
+ 275 011c 6900     		.ascii	"i\000"
+ 276 011e 01       		.byte	0x1
+ 277 011f 10       		.byte	0x10
+ 278 0120 73000000 		.4byte	0x73
+ 279 0124 00000000 		.4byte	.LLST0
+ 280 0128 00       		.byte	0
+ 281 0129 0D       		.uleb128 0xd
+ 282 012a 04       		.byte	0x4
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 7
+
+
+ 283 012b E7000000 		.4byte	0xe7
+ 284 012f 0E       		.uleb128 0xe
+ 285 0130 9F000000 		.4byte	.LASF26
+ 286 0134 01       		.byte	0x1
+ 287 0135 2B       		.byte	0x2b
+ 288 0136 81000000 		.4byte	0x81
+ 289 013a 00000000 		.4byte	.LFB1
+ 290 013e 38000000 		.4byte	.LFE1-.LFB1
+ 291 0142 01       		.uleb128 0x1
+ 292 0143 9C       		.byte	0x9c
+ 293 0144 74010000 		.4byte	0x174
+ 294 0148 0F       		.uleb128 0xf
+ 295 0149 07000000 		.4byte	.LASF18
+ 296 014d 01       		.byte	0x1
+ 297 014e 2B       		.byte	0x2b
+ 298 014f 29010000 		.4byte	0x129
+ 299 0153 2A000000 		.4byte	.LLST1
+ 300 0157 0F       		.uleb128 0xf
+ 301 0158 40010000 		.4byte	.LASF19
+ 302 015c 01       		.byte	0x1
+ 303 015d 2B       		.byte	0x2b
+ 304 015e 8C000000 		.4byte	0x8c
+ 305 0162 96000000 		.4byte	.LLST2
+ 306 0166 0B       		.uleb128 0xb
+ 307 0167 00000000 		.4byte	.LASF20
+ 308 016b 01       		.byte	0x1
+ 309 016c 2B       		.byte	0x2b
+ 310 016d F2000000 		.4byte	0xf2
+ 311 0171 01       		.uleb128 0x1
+ 312 0172 52       		.byte	0x52
+ 313 0173 00       		.byte	0
+ 314 0174 08       		.uleb128 0x8
+ 315 0175 81000000 		.4byte	0x81
+ 316 0179 84010000 		.4byte	0x184
+ 317 017d 10       		.uleb128 0x10
+ 318 017e CF000000 		.4byte	0xcf
+ 319 0182 FF       		.byte	0xff
+ 320 0183 00       		.byte	0
+ 321 0184 11       		.uleb128 0x11
+ 322 0185 50000000 		.4byte	.LASF21
+ 323 0189 05       		.byte	0x5
+ 324 018a 05       		.byte	0x5
+ 325 018b 8F010000 		.4byte	0x18f
+ 326 018f 12       		.uleb128 0x12
+ 327 0190 74010000 		.4byte	0x174
+ 328 0194 08       		.uleb128 0x8
+ 329 0195 81000000 		.4byte	0x81
+ 330 0199 A5010000 		.4byte	0x1a5
+ 331 019d 09       		.uleb128 0x9
+ 332 019e CF000000 		.4byte	0xcf
+ 333 01a2 FF7F     		.2byte	0x7fff
+ 334 01a4 00       		.byte	0
+ 335 01a5 13       		.uleb128 0x13
+ 336 01a6 726F6D00 		.ascii	"rom\000"
+ 337 01aa 05       		.byte	0x5
+ 338 01ab 06       		.byte	0x6
+ 339 01ac B0010000 		.4byte	0x1b0
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 8
+
+
+ 340 01b0 12       		.uleb128 0x12
+ 341 01b1 94010000 		.4byte	0x194
+ 342 01b5 00       		.byte	0
+ 343              		.section	.debug_abbrev,"",%progbits
+ 344              	.Ldebug_abbrev0:
+ 345 0000 01       		.uleb128 0x1
+ 346 0001 11       		.uleb128 0x11
+ 347 0002 01       		.byte	0x1
+ 348 0003 25       		.uleb128 0x25
+ 349 0004 0E       		.uleb128 0xe
+ 350 0005 13       		.uleb128 0x13
+ 351 0006 0B       		.uleb128 0xb
+ 352 0007 03       		.uleb128 0x3
+ 353 0008 0E       		.uleb128 0xe
+ 354 0009 1B       		.uleb128 0x1b
+ 355 000a 0E       		.uleb128 0xe
+ 356 000b 55       		.uleb128 0x55
+ 357 000c 17       		.uleb128 0x17
+ 358 000d 11       		.uleb128 0x11
+ 359 000e 01       		.uleb128 0x1
+ 360 000f 10       		.uleb128 0x10
+ 361 0010 17       		.uleb128 0x17
+ 362 0011 00       		.byte	0
+ 363 0012 00       		.byte	0
+ 364 0013 02       		.uleb128 0x2
+ 365 0014 24       		.uleb128 0x24
+ 366 0015 00       		.byte	0
+ 367 0016 0B       		.uleb128 0xb
+ 368 0017 0B       		.uleb128 0xb
+ 369 0018 3E       		.uleb128 0x3e
+ 370 0019 0B       		.uleb128 0xb
+ 371 001a 03       		.uleb128 0x3
+ 372 001b 0E       		.uleb128 0xe
+ 373 001c 00       		.byte	0
+ 374 001d 00       		.byte	0
+ 375 001e 03       		.uleb128 0x3
+ 376 001f 16       		.uleb128 0x16
+ 377 0020 00       		.byte	0
+ 378 0021 03       		.uleb128 0x3
+ 379 0022 0E       		.uleb128 0xe
+ 380 0023 3A       		.uleb128 0x3a
+ 381 0024 0B       		.uleb128 0xb
+ 382 0025 3B       		.uleb128 0x3b
+ 383 0026 0B       		.uleb128 0xb
+ 384 0027 49       		.uleb128 0x49
+ 385 0028 13       		.uleb128 0x13
+ 386 0029 00       		.byte	0
+ 387 002a 00       		.byte	0
+ 388 002b 04       		.uleb128 0x4
+ 389 002c 24       		.uleb128 0x24
+ 390 002d 00       		.byte	0
+ 391 002e 0B       		.uleb128 0xb
+ 392 002f 0B       		.uleb128 0xb
+ 393 0030 3E       		.uleb128 0x3e
+ 394 0031 0B       		.uleb128 0xb
+ 395 0032 03       		.uleb128 0x3
+ 396 0033 08       		.uleb128 0x8
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 9
+
+
+ 397 0034 00       		.byte	0
+ 398 0035 00       		.byte	0
+ 399 0036 05       		.uleb128 0x5
+ 400 0037 13       		.uleb128 0x13
+ 401 0038 01       		.byte	0x1
+ 402 0039 03       		.uleb128 0x3
+ 403 003a 0E       		.uleb128 0xe
+ 404 003b 0B       		.uleb128 0xb
+ 405 003c 05       		.uleb128 0x5
+ 406 003d 3A       		.uleb128 0x3a
+ 407 003e 0B       		.uleb128 0xb
+ 408 003f 3B       		.uleb128 0x3b
+ 409 0040 0B       		.uleb128 0xb
+ 410 0041 01       		.uleb128 0x1
+ 411 0042 13       		.uleb128 0x13
+ 412 0043 00       		.byte	0
+ 413 0044 00       		.byte	0
+ 414 0045 06       		.uleb128 0x6
+ 415 0046 0D       		.uleb128 0xd
+ 416 0047 00       		.byte	0
+ 417 0048 03       		.uleb128 0x3
+ 418 0049 0E       		.uleb128 0xe
+ 419 004a 3A       		.uleb128 0x3a
+ 420 004b 0B       		.uleb128 0xb
+ 421 004c 3B       		.uleb128 0x3b
+ 422 004d 0B       		.uleb128 0xb
+ 423 004e 49       		.uleb128 0x49
+ 424 004f 13       		.uleb128 0x13
+ 425 0050 38       		.uleb128 0x38
+ 426 0051 0B       		.uleb128 0xb
+ 427 0052 00       		.byte	0
+ 428 0053 00       		.byte	0
+ 429 0054 07       		.uleb128 0x7
+ 430 0055 0D       		.uleb128 0xd
+ 431 0056 00       		.byte	0
+ 432 0057 03       		.uleb128 0x3
+ 433 0058 0E       		.uleb128 0xe
+ 434 0059 3A       		.uleb128 0x3a
+ 435 005a 0B       		.uleb128 0xb
+ 436 005b 3B       		.uleb128 0x3b
+ 437 005c 0B       		.uleb128 0xb
+ 438 005d 49       		.uleb128 0x49
+ 439 005e 13       		.uleb128 0x13
+ 440 005f 38       		.uleb128 0x38
+ 441 0060 05       		.uleb128 0x5
+ 442 0061 00       		.byte	0
+ 443 0062 00       		.byte	0
+ 444 0063 08       		.uleb128 0x8
+ 445 0064 01       		.uleb128 0x1
+ 446 0065 01       		.byte	0x1
+ 447 0066 49       		.uleb128 0x49
+ 448 0067 13       		.uleb128 0x13
+ 449 0068 01       		.uleb128 0x1
+ 450 0069 13       		.uleb128 0x13
+ 451 006a 00       		.byte	0
+ 452 006b 00       		.byte	0
+ 453 006c 09       		.uleb128 0x9
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 10
+
+
+ 454 006d 21       		.uleb128 0x21
+ 455 006e 00       		.byte	0
+ 456 006f 49       		.uleb128 0x49
+ 457 0070 13       		.uleb128 0x13
+ 458 0071 2F       		.uleb128 0x2f
+ 459 0072 05       		.uleb128 0x5
+ 460 0073 00       		.byte	0
+ 461 0074 00       		.byte	0
+ 462 0075 0A       		.uleb128 0xa
+ 463 0076 2E       		.uleb128 0x2e
+ 464 0077 01       		.byte	0x1
+ 465 0078 3F       		.uleb128 0x3f
+ 466 0079 19       		.uleb128 0x19
+ 467 007a 03       		.uleb128 0x3
+ 468 007b 0E       		.uleb128 0xe
+ 469 007c 3A       		.uleb128 0x3a
+ 470 007d 0B       		.uleb128 0xb
+ 471 007e 3B       		.uleb128 0x3b
+ 472 007f 0B       		.uleb128 0xb
+ 473 0080 27       		.uleb128 0x27
+ 474 0081 19       		.uleb128 0x19
+ 475 0082 11       		.uleb128 0x11
+ 476 0083 01       		.uleb128 0x1
+ 477 0084 12       		.uleb128 0x12
+ 478 0085 06       		.uleb128 0x6
+ 479 0086 40       		.uleb128 0x40
+ 480 0087 18       		.uleb128 0x18
+ 481 0088 9742     		.uleb128 0x2117
+ 482 008a 19       		.uleb128 0x19
+ 483 008b 01       		.uleb128 0x1
+ 484 008c 13       		.uleb128 0x13
+ 485 008d 00       		.byte	0
+ 486 008e 00       		.byte	0
+ 487 008f 0B       		.uleb128 0xb
+ 488 0090 05       		.uleb128 0x5
+ 489 0091 00       		.byte	0
+ 490 0092 03       		.uleb128 0x3
+ 491 0093 0E       		.uleb128 0xe
+ 492 0094 3A       		.uleb128 0x3a
+ 493 0095 0B       		.uleb128 0xb
+ 494 0096 3B       		.uleb128 0x3b
+ 495 0097 0B       		.uleb128 0xb
+ 496 0098 49       		.uleb128 0x49
+ 497 0099 13       		.uleb128 0x13
+ 498 009a 02       		.uleb128 0x2
+ 499 009b 18       		.uleb128 0x18
+ 500 009c 00       		.byte	0
+ 501 009d 00       		.byte	0
+ 502 009e 0C       		.uleb128 0xc
+ 503 009f 34       		.uleb128 0x34
+ 504 00a0 00       		.byte	0
+ 505 00a1 03       		.uleb128 0x3
+ 506 00a2 08       		.uleb128 0x8
+ 507 00a3 3A       		.uleb128 0x3a
+ 508 00a4 0B       		.uleb128 0xb
+ 509 00a5 3B       		.uleb128 0x3b
+ 510 00a6 0B       		.uleb128 0xb
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 11
+
+
+ 511 00a7 49       		.uleb128 0x49
+ 512 00a8 13       		.uleb128 0x13
+ 513 00a9 02       		.uleb128 0x2
+ 514 00aa 17       		.uleb128 0x17
+ 515 00ab 00       		.byte	0
+ 516 00ac 00       		.byte	0
+ 517 00ad 0D       		.uleb128 0xd
+ 518 00ae 0F       		.uleb128 0xf
+ 519 00af 00       		.byte	0
+ 520 00b0 0B       		.uleb128 0xb
+ 521 00b1 0B       		.uleb128 0xb
+ 522 00b2 49       		.uleb128 0x49
+ 523 00b3 13       		.uleb128 0x13
+ 524 00b4 00       		.byte	0
+ 525 00b5 00       		.byte	0
+ 526 00b6 0E       		.uleb128 0xe
+ 527 00b7 2E       		.uleb128 0x2e
+ 528 00b8 01       		.byte	0x1
+ 529 00b9 3F       		.uleb128 0x3f
+ 530 00ba 19       		.uleb128 0x19
+ 531 00bb 03       		.uleb128 0x3
+ 532 00bc 0E       		.uleb128 0xe
+ 533 00bd 3A       		.uleb128 0x3a
+ 534 00be 0B       		.uleb128 0xb
+ 535 00bf 3B       		.uleb128 0x3b
+ 536 00c0 0B       		.uleb128 0xb
+ 537 00c1 27       		.uleb128 0x27
+ 538 00c2 19       		.uleb128 0x19
+ 539 00c3 49       		.uleb128 0x49
+ 540 00c4 13       		.uleb128 0x13
+ 541 00c5 11       		.uleb128 0x11
+ 542 00c6 01       		.uleb128 0x1
+ 543 00c7 12       		.uleb128 0x12
+ 544 00c8 06       		.uleb128 0x6
+ 545 00c9 40       		.uleb128 0x40
+ 546 00ca 18       		.uleb128 0x18
+ 547 00cb 9742     		.uleb128 0x2117
+ 548 00cd 19       		.uleb128 0x19
+ 549 00ce 01       		.uleb128 0x1
+ 550 00cf 13       		.uleb128 0x13
+ 551 00d0 00       		.byte	0
+ 552 00d1 00       		.byte	0
+ 553 00d2 0F       		.uleb128 0xf
+ 554 00d3 05       		.uleb128 0x5
+ 555 00d4 00       		.byte	0
+ 556 00d5 03       		.uleb128 0x3
+ 557 00d6 0E       		.uleb128 0xe
+ 558 00d7 3A       		.uleb128 0x3a
+ 559 00d8 0B       		.uleb128 0xb
+ 560 00d9 3B       		.uleb128 0x3b
+ 561 00da 0B       		.uleb128 0xb
+ 562 00db 49       		.uleb128 0x49
+ 563 00dc 13       		.uleb128 0x13
+ 564 00dd 02       		.uleb128 0x2
+ 565 00de 17       		.uleb128 0x17
+ 566 00df 00       		.byte	0
+ 567 00e0 00       		.byte	0
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 12
+
+
+ 568 00e1 10       		.uleb128 0x10
+ 569 00e2 21       		.uleb128 0x21
+ 570 00e3 00       		.byte	0
+ 571 00e4 49       		.uleb128 0x49
+ 572 00e5 13       		.uleb128 0x13
+ 573 00e6 2F       		.uleb128 0x2f
+ 574 00e7 0B       		.uleb128 0xb
+ 575 00e8 00       		.byte	0
+ 576 00e9 00       		.byte	0
+ 577 00ea 11       		.uleb128 0x11
+ 578 00eb 34       		.uleb128 0x34
+ 579 00ec 00       		.byte	0
+ 580 00ed 03       		.uleb128 0x3
+ 581 00ee 0E       		.uleb128 0xe
+ 582 00ef 3A       		.uleb128 0x3a
+ 583 00f0 0B       		.uleb128 0xb
+ 584 00f1 3B       		.uleb128 0x3b
+ 585 00f2 0B       		.uleb128 0xb
+ 586 00f3 49       		.uleb128 0x49
+ 587 00f4 13       		.uleb128 0x13
+ 588 00f5 3F       		.uleb128 0x3f
+ 589 00f6 19       		.uleb128 0x19
+ 590 00f7 3C       		.uleb128 0x3c
+ 591 00f8 19       		.uleb128 0x19
+ 592 00f9 00       		.byte	0
+ 593 00fa 00       		.byte	0
+ 594 00fb 12       		.uleb128 0x12
+ 595 00fc 26       		.uleb128 0x26
+ 596 00fd 00       		.byte	0
+ 597 00fe 49       		.uleb128 0x49
+ 598 00ff 13       		.uleb128 0x13
+ 599 0100 00       		.byte	0
+ 600 0101 00       		.byte	0
+ 601 0102 13       		.uleb128 0x13
+ 602 0103 34       		.uleb128 0x34
+ 603 0104 00       		.byte	0
+ 604 0105 03       		.uleb128 0x3
+ 605 0106 08       		.uleb128 0x8
+ 606 0107 3A       		.uleb128 0x3a
+ 607 0108 0B       		.uleb128 0xb
+ 608 0109 3B       		.uleb128 0x3b
+ 609 010a 0B       		.uleb128 0xb
+ 610 010b 49       		.uleb128 0x49
+ 611 010c 13       		.uleb128 0x13
+ 612 010d 3F       		.uleb128 0x3f
+ 613 010e 19       		.uleb128 0x19
+ 614 010f 3C       		.uleb128 0x3c
+ 615 0110 19       		.uleb128 0x19
+ 616 0111 00       		.byte	0
+ 617 0112 00       		.byte	0
+ 618 0113 00       		.byte	0
+ 619              		.section	.debug_loc,"",%progbits
+ 620              	.Ldebug_loc0:
+ 621              	.LLST0:
+ 622 0000 00000000 		.4byte	.LVL0
+ 623 0004 04000000 		.4byte	.LVL1
+ 624 0008 0200     		.2byte	0x2
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 13
+
+
+ 625 000a 30       		.byte	0x30
+ 626 000b 9F       		.byte	0x9f
+ 627 000c 04000000 		.4byte	.LVL1
+ 628 0010 12000000 		.4byte	.LVL3
+ 629 0014 0100     		.2byte	0x1
+ 630 0016 53       		.byte	0x53
+ 631 0017 14000000 		.4byte	.LVL4
+ 632 001b 28000000 		.4byte	.LFE0
+ 633 001f 0100     		.2byte	0x1
+ 634 0021 53       		.byte	0x53
+ 635 0022 00000000 		.4byte	0
+ 636 0026 00000000 		.4byte	0
+ 637              	.LLST1:
+ 638 002a 00000000 		.4byte	.LVL6
+ 639 002e 10000000 		.4byte	.LVL7
+ 640 0032 0100     		.2byte	0x1
+ 641 0034 50       		.byte	0x50
+ 642 0035 10000000 		.4byte	.LVL7
+ 643 0039 12000000 		.4byte	.LVL8
+ 644 003d 0400     		.2byte	0x4
+ 645 003f F3       		.byte	0xf3
+ 646 0040 01       		.uleb128 0x1
+ 647 0041 50       		.byte	0x50
+ 648 0042 9F       		.byte	0x9f
+ 649 0043 12000000 		.4byte	.LVL8
+ 650 0047 16000000 		.4byte	.LVL9
+ 651 004b 0100     		.2byte	0x1
+ 652 004d 50       		.byte	0x50
+ 653 004e 16000000 		.4byte	.LVL9
+ 654 0052 18000000 		.4byte	.LVL10
+ 655 0056 0400     		.2byte	0x4
+ 656 0058 F3       		.byte	0xf3
+ 657 0059 01       		.uleb128 0x1
+ 658 005a 50       		.byte	0x50
+ 659 005b 9F       		.byte	0x9f
+ 660 005c 18000000 		.4byte	.LVL10
+ 661 0060 2A000000 		.4byte	.LVL12
+ 662 0064 0100     		.2byte	0x1
+ 663 0066 50       		.byte	0x50
+ 664 0067 2A000000 		.4byte	.LVL12
+ 665 006b 2C000000 		.4byte	.LVL13
+ 666 006f 0400     		.2byte	0x4
+ 667 0071 F3       		.byte	0xf3
+ 668 0072 01       		.uleb128 0x1
+ 669 0073 50       		.byte	0x50
+ 670 0074 9F       		.byte	0x9f
+ 671 0075 2C000000 		.4byte	.LVL13
+ 672 0079 2E000000 		.4byte	.LVL14
+ 673 007d 0100     		.2byte	0x1
+ 674 007f 50       		.byte	0x50
+ 675 0080 2E000000 		.4byte	.LVL14
+ 676 0084 38000000 		.4byte	.LFE1
+ 677 0088 0400     		.2byte	0x4
+ 678 008a F3       		.byte	0xf3
+ 679 008b 01       		.uleb128 0x1
+ 680 008c 50       		.byte	0x50
+ 681 008d 9F       		.byte	0x9f
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 14
+
+
+ 682 008e 00000000 		.4byte	0
+ 683 0092 00000000 		.4byte	0
+ 684              	.LLST2:
+ 685 0096 00000000 		.4byte	.LVL6
+ 686 009a 24000000 		.4byte	.LVL11
+ 687 009e 0100     		.2byte	0x1
+ 688 00a0 51       		.byte	0x51
+ 689 00a1 24000000 		.4byte	.LVL11
+ 690 00a5 2C000000 		.4byte	.LVL13
+ 691 00a9 0400     		.2byte	0x4
+ 692 00ab F3       		.byte	0xf3
+ 693 00ac 01       		.uleb128 0x1
+ 694 00ad 51       		.byte	0x51
+ 695 00ae 9F       		.byte	0x9f
+ 696 00af 2C000000 		.4byte	.LVL13
+ 697 00b3 38000000 		.4byte	.LFE1
+ 698 00b7 0100     		.2byte	0x1
+ 699 00b9 51       		.byte	0x51
+ 700 00ba 00000000 		.4byte	0
+ 701 00be 00000000 		.4byte	0
+ 702              		.section	.debug_aranges,"",%progbits
+ 703 0000 24000000 		.4byte	0x24
+ 704 0004 0200     		.2byte	0x2
+ 705 0006 00000000 		.4byte	.Ldebug_info0
+ 706 000a 04       		.byte	0x4
+ 707 000b 00       		.byte	0
+ 708 000c 0000     		.2byte	0
+ 709 000e 0000     		.2byte	0
+ 710 0010 00000000 		.4byte	.LFB0
+ 711 0014 28000000 		.4byte	.LFE0-.LFB0
+ 712 0018 00000000 		.4byte	.LFB1
+ 713 001c 38000000 		.4byte	.LFE1-.LFB1
+ 714 0020 00000000 		.4byte	0
+ 715 0024 00000000 		.4byte	0
+ 716              		.section	.debug_ranges,"",%progbits
+ 717              	.Ldebug_ranges0:
+ 718 0000 00000000 		.4byte	.LFB0
+ 719 0004 28000000 		.4byte	.LFE0
+ 720 0008 00000000 		.4byte	.LFB1
+ 721 000c 38000000 		.4byte	.LFE1
+ 722 0010 00000000 		.4byte	0
+ 723 0014 00000000 		.4byte	0
+ 724              		.section	.debug_line,"",%progbits
+ 725              	.Ldebug_line0:
+ 726 0000 89010000 		.section	.debug_str,"MS",%progbits,1
+ 726      02003201 
+ 726      00000201 
+ 726      FB0E0D00 
+ 726      01010101 
+ 727              	.LASF20:
+ 728 0000 696E4269 		.ascii	"inBios\000"
+ 728      6F7300
+ 729              	.LASF18:
+ 730 0007 6D656D6F 		.ascii	"memory\000"
+ 730      727900
+ 731              	.LASF3:
+ 732 000e 5F5F7569 		.ascii	"__uint8_t\000"
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 15
+
+
+ 732      6E74385F 
+ 732      7400
+ 733              	.LASF24:
+ 734 0018 443A5C36 		.ascii	"D:\\6115\\6115FP_GBEmulator\\GBEmulator.cydsn\000"
+ 734      3131355C 
+ 734      36313135 
+ 734      46505F47 
+ 734      42456D75 
+ 735              	.LASF25:
+ 736 0043 72657365 		.ascii	"reset_memory\000"
+ 736      745F6D65 
+ 736      6D6F7279 
+ 736      00
+ 737              	.LASF21:
+ 738 0050 62696F73 		.ascii	"bios\000"
+ 738      00
+ 739              	.LASF13:
+ 740 0055 7772616D 		.ascii	"wram\000"
+ 740      00
+ 741              	.LASF16:
+ 742 005a 4D656D6F 		.ascii	"Memory\000"
+ 742      727900
+ 743              	.LASF1:
+ 744 0061 756E7369 		.ascii	"unsigned char\000"
+ 744      676E6564 
+ 744      20636861 
+ 744      7200
+ 745              	.LASF7:
+ 746 006f 6C6F6E67 		.ascii	"long unsigned int\000"
+ 746      20756E73 
+ 746      69676E65 
+ 746      6420696E 
+ 746      7400
+ 747              	.LASF5:
+ 748 0081 73686F72 		.ascii	"short unsigned int\000"
+ 748      7420756E 
+ 748      7369676E 
+ 748      65642069 
+ 748      6E7400
+ 749              	.LASF4:
+ 750 0094 5F5F7569 		.ascii	"__uint16_t\000"
+ 750      6E743136 
+ 750      5F7400
+ 751              	.LASF26:
+ 752 009f 66657463 		.ascii	"fetch\000"
+ 752      6800
+ 753              	.LASF22:
+ 754 00a5 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 754      4320342E 
+ 754      392E3320 
+ 754      32303135 
+ 754      30333033 
+ 755 00d8 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 755      20726576 
+ 755      6973696F 
+ 755      6E203232 
+ 755      31323230 
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 16
+
+
+ 756 010b 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 756      66756E63 
+ 756      74696F6E 
+ 756      2D736563 
+ 756      74696F6E 
+ 757              	.LASF10:
+ 758 0133 756E7369 		.ascii	"unsigned int\000"
+ 758      676E6564 
+ 758      20696E74 
+ 758      00
+ 759              	.LASF19:
+ 760 0140 61646472 		.ascii	"address\000"
+ 760      65737300 
+ 761              	.LASF9:
+ 762 0148 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 762      206C6F6E 
+ 762      6720756E 
+ 762      7369676E 
+ 762      65642069 
+ 763              	.LASF11:
+ 764 015f 75696E74 		.ascii	"uint8_t\000"
+ 764      385F7400 
+ 765              	.LASF15:
+ 766 0167 73697A65 		.ascii	"sizetype\000"
+ 766      74797065 
+ 766      00
+ 767              	.LASF8:
+ 768 0170 6C6F6E67 		.ascii	"long long int\000"
+ 768      206C6F6E 
+ 768      6720696E 
+ 768      7400
+ 769              	.LASF23:
+ 770 017e 2E5C6D65 		.ascii	".\\memory.c\000"
+ 770      6D6F7279 
+ 770      2E6300
+ 771              	.LASF2:
+ 772 0189 73686F72 		.ascii	"short int\000"
+ 772      7420696E 
+ 772      7400
+ 773              	.LASF12:
+ 774 0193 75696E74 		.ascii	"uint16_t\000"
+ 774      31365F74 
+ 774      00
+ 775              	.LASF6:
+ 776 019c 6C6F6E67 		.ascii	"long int\000"
+ 776      20696E74 
+ 776      00
+ 777              	.LASF0:
+ 778 01a5 7369676E 		.ascii	"signed char\000"
+ 778      65642063 
+ 778      68617200 
+ 779              	.LASF14:
+ 780 01b1 7672616D 		.ascii	"vram\000"
+ 780      00
+ 781              	.LASF17:
+ 782 01b6 5F426F6F 		.ascii	"_Bool\000"
+ 782      6C00
+ARM GAS  C:\Users\raytr\AppData\Local\Temp\ccCM2ABR.s 			page 17
+
+
+ 783              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
