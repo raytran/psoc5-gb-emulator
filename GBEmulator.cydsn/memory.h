@@ -10,6 +10,8 @@ typedef struct Memory {
 } Memory;
 // Fetch a byte from memory
 uint8_t fetch(Memory* memory, uint16_t address, bool inBios);
+// Write a byte into memory
+void write_mem(Memory* memory, uint16_t address, uint8_t data);
 // Reset memory back to 0s
 void reset_memory(Memory* memory);
 

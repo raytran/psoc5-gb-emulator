@@ -11,7 +11,8 @@ typedef struct Cpu {
 } Cpu;
 
 // Handles one round of fetch/decode/execute
-// Returns the number of clock cycles taken
+// Returns the number of machine cycles taken
+// 4 clock cycles == 1 machine cycle
 int tick(Cpu* cpu);
 // Resets the cpu to the starting state, clearing all registers etc
 void reset_cpu(Cpu *cpu);

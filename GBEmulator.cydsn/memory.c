@@ -54,3 +54,14 @@ uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
     // TODO add other memory access locations...
     return 0;
 }
+
+
+void write_mem(Memory* memory, uint16_t address, uint8_t data) {
+    if (ROM_START <= address && address < ROM_END) {
+        // Nothing to do... can't write to ROM
+    } else if (VRAM_START <= address && address < VRAM_END) {
+        memory->vram[address - VRAM_START] = data;
+    } else if (WRAM_START <= address && address < WRAM_START) {
+        memory->wram[address - WRAM_START] = data;
+    }
+}
