@@ -1,16 +1,8 @@
-#include "memory.h"
+#include "memory.h" 
 #include "rom.h"
 #include "cpu.h"
 #include "stdint.h"
 #include "stdbool.h"
-#define ROM_START 0
-#define ROM_END 0x8000
-
-#define VRAM_START 0x8000
-#define VRAM_END 0xA000
-
-#define WRAM_START 0xC000
-#define WRAM_END 0xE000
 
 void reset_memory(Memory* memory){
     int i;
@@ -48,7 +40,7 @@ uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
         return rom[address];
     } else if (VRAM_START <= address && address < VRAM_END) {
         return memory->vram[address - VRAM_START];
-    } else if (WRAM_START <= address && address < WRAM_START) {
+    } else if (WRAM_START <= address && address < WRAM_END) {
         return memory->wram[address - WRAM_START];
     }
     // TODO add other memory access locations...
@@ -61,7 +53,7 @@ void write_mem(Memory* memory, uint16_t address, uint8_t data) {
         // Nothing to do... can't write to ROM
     } else if (VRAM_START <= address && address < VRAM_END) {
         memory->vram[address - VRAM_START] = data;
-    } else if (WRAM_START <= address && address < WRAM_START) {
+    } else if (WRAM_START <= address && address < WRAM_END) {
         memory->wram[address - WRAM_START] = data;
     }
 }

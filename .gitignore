@@ -21,3 +21,5 @@
 *.cydsn/DP8051        
        
 *.cydsn/Generated_Source 
+
+test_ceedling/build/*
