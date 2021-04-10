@@ -6,6 +6,10 @@
 typedef enum CC {
     Z, NZ, C, NC
 } CC;
+
+void increment_pc(Cpu* cpu);
+uint8_t fetch_and_increment_pc(Cpu* cpu);
+uint16_t fetch_and_increment_pc_twice(Cpu* cpu);
 // all instructions return the # of machine cycles used
 // all instructions assume the program counter is pointing at the next instr
 uint8_t adc_a_r8(Cpu* cpu, uint8_t* reg);
@@ -39,12 +43,12 @@ uint8_t xor_a_n8(Cpu* cpu);
 uint8_t add_hl_r16(Cpu* cpu, uint16_t* reg);
 uint8_t dec_r16(Cpu* cpu, uint16_t* reg);
 uint8_t inc_r16(Cpu* cpu, uint16_t* reg);
-uint8_t bit_u3_r8(Cpu* cpu, uint8_t* reg);
-uint8_t bit_u3_mhl(Cpu* cpu);
-uint8_t res_u3_r8(Cpu* cpu, uint8_t* reg);
-uint8_t res_u3_mhl(Cpu* cpu);
-uint8_t set_u3_r8(Cpu* cpu, uint8_t* reg);
-uint8_t set_u3_mhl(Cpu* cpu);
+uint8_t bit_u3_r8(Cpu* cpu, uint8_t position, uint8_t* reg);
+uint8_t bit_u3_mhl(Cpu* cpu, uint8_t position);
+uint8_t res_u3_r8(Cpu* cpu, uint8_t position, uint8_t* reg);
+uint8_t res_u3_mhl(Cpu* cpu, uint8_t position);
+uint8_t set_u3_r8(Cpu* cpu, uint8_t position, uint8_t* reg);
+uint8_t set_u3_mhl(Cpu* cpu, uint8_t position);
 uint8_t swap_r8(Cpu* cpu, uint8_t* reg);
 uint8_t swap_mhl(Cpu* cpu);
 uint8_t rl_r8(Cpu* cpu, uint8_t* reg);
@@ -71,11 +75,11 @@ uint8_t ld_r16_n16(Cpu* cpu, uint16_t* reg);
 uint8_t ld_mhl_r8(Cpu* cpu, uint8_t* reg);
 uint8_t ld_mhl_n8(Cpu* cpu);
 uint8_t ld_r8_mhl(Cpu* cpu, uint8_t* reg);
-uint8_t ld_mr16_a(Cpu* cpu);
+uint8_t ld_mr16_a(Cpu* cpu, uint16_t* reg);
 uint8_t ld_mn16_a(Cpu* cpu);
 uint8_t ldh_mn16_a(Cpu* cpu);
 uint8_t ldh_mc_a(Cpu* cpu);
-uint8_t ld_a_mr16(Cpu* cpu);
+uint8_t ld_a_mr16(Cpu* cpu, uint16_t* reg);
 uint8_t ld_a_mn16(Cpu* cpu);
 uint8_t ldh_a_mn16(Cpu* cpu);
 uint8_t ldh_a_mc(Cpu* cpu);
@@ -93,7 +97,7 @@ uint8_t jr_cc_e8(Cpu* cpu, CC cc);
 uint8_t ret_cc(Cpu* cpu, CC cc);
 uint8_t ret(Cpu* cpu);
 uint8_t reti(Cpu* cpu);
-uint8_t rst_vec(Cpu* cpu);
+uint8_t rst_vec(Cpu* cpu, uint8_t vec);
 uint8_t add_hl_sp(Cpu* cpu);
 uint8_t add_sp_e8(Cpu* cpu);
 uint8_t dec_sp(Cpu* cpu);

@@ -41,11 +41,13 @@
           <File BuildType="BUILD" Toolchain="">.\rom.c</File>
           <File BuildType="BUILD" Toolchain="">.\memory.c</File>
           <File BuildType="BUILD" Toolchain="">.\registers.c</File>
+          <File BuildType="BUILD" Toolchain="">.\instruction_set.c</File>
           <File BuildType="BUILD" Toolchain="">.\cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">.\registers.h</File>
           <File BuildType="BUILD" Toolchain="">.\memory.h</File>
           <File BuildType="BUILD" Toolchain="">.\cpu.h</File>
           <File BuildType="BUILD" Toolchain="">.\rom.h</File>
+          <File BuildType="BUILD" Toolchain="">.\instruction_set.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\Generated_Source\PSoC5">
