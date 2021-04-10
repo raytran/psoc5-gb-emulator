@@ -22,4 +22,6 @@
        
 *.cydsn/Generated_Source 
 
+*.cydsn/CortexM3 
+
 test_ceedling/build/*

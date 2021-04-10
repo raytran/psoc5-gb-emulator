@@ -1,17 +1,20 @@
---------------- Build Started: 04/09/2021 23:56:02 Project: GBEmulator, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
+--------------- Build Started: 04/10/2021 02:31:03 Project: GBEmulator, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
 The code generation step is up to date.
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -Wno-main -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_493\Debug/main.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c .\main.c -o .\CortexM3\ARM_GCC_493\Debug\main.o
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -Wno-main -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_493\Debug/cpu.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c .\cpu.c -o .\CortexM3\ARM_GCC_493\Debug\cpu.o
 .\cpu.c: In function 'execute_normal':
-.\cpu.c:90:48: warning: overflow in implicit constant conversion [-Woverflow]
+.\cpu.c:122:48: warning: overflow in implicit constant conversion [-Woverflow]
          write_mem(&cpu->mem, ldu16sp_addr + 1, cpu->reg.sp & 0xFF00);
                                                 ^
+.\cpu.c:885:18: warning: unused variable 'callnza16_addr' [-Wunused-variable]
+         uint16_t callnza16_addr = fetch_and_increment_pc_twice(cpu);
+                  ^
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -Wno-main -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_493\Debug/memory.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c .\memory.c -o .\CortexM3\ARM_GCC_493\Debug\memory.o
 arm-none-eabi-ar.exe -rs .\CortexM3\ARM_GCC_493\Debug\GBEmulator.a .\CortexM3\ARM_GCC_493\Debug\cyfitter_cfg.o .\CortexM3\ARM_GCC_493\Debug\CyBootAsmGnu.o .\CortexM3\ARM_GCC_493\Debug\CyDmac.o .\CortexM3\ARM_GCC_493\Debug\CyFlash.o .\CortexM3\ARM_GCC_493\Debug\CyLib.o .\CortexM3\ARM_GCC_493\Debug\cyPm.o .\CortexM3\ARM_GCC_493\Debug\CySpc.o .\CortexM3\ARM_GCC_493\Debug\cyutils.o
 arm-none-eabi-ar.exe: creating .\CortexM3\ARM_GCC_493\Debug\GBEmulator.a
 arm-none-eabi-gcc.exe -Wl,--start-group -o .\CortexM3\ARM_GCC_493\Debug\GBEmulator.elf .\CortexM3\ARM_GCC_493\Debug\main.o .\CortexM3\ARM_GCC_493\Debug\cpu.o .\CortexM3\ARM_GCC_493\Debug\rom.o .\CortexM3\ARM_GCC_493\Debug\memory.o .\CortexM3\ARM_GCC_493\Debug\registers.o .\CortexM3\ARM_GCC_493\Debug\cymetadata.o .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o .\CortexM3\ARM_GCC_493\Debug\GBEmulator.a "C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM3\ARM_GCC_493\Debug\CyComponentLibrary.a" -mcpu=cortex-m3 -mthumb -g -ffunction-sections -Og -ffat-lto-objects -L Generated_Source\PSoC5 -Wl,-Map,.\CortexM3\ARM_GCC_493\Debug/GBEmulator.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections -Wl,--end-group
 cyelftool.exe -C D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\CortexM3\ARM_GCC_493\Debug\GBEmulator.elf --flash_row_size 256 --flash_size 262144
 cyelftool.exe -S D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\CortexM3\ARM_GCC_493\Debug\GBEmulator.elf
-Flash used: 35584 of 262144 bytes (13.6%).
-SRAM used: 14781 of 65536 bytes (22.6%). Stack: 2048 bytes. Heap: 128 bytes.
---------------- Build Succeeded: 04/09/2021 23:56:03 ---------------
+Flash used: 37632 of 262144 bytes (14.4%).
+SRAM used: 18877 of 65536 bytes (28.8%). Stack: 2048 bytes. Heap: 128 bytes.
+--------------- Build Succeeded: 04/10/2021 02:31:05 ---------------
