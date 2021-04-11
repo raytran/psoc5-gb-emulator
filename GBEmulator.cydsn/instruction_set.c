@@ -693,7 +693,7 @@ uint8_t ret_cc(Cpu* cpu, CC cc){
 }
 
 uint8_t reti(Cpu* cpu){
-    set_ime(cpu, true);
+    cpu->reg.ime = true;
     return ret(cpu);
 }
 uint8_t rst_vec(Cpu* cpu, uint8_t vec){
@@ -779,11 +779,11 @@ uint8_t daa(Cpu* cpu){
     return 0;
 }
 uint8_t di(Cpu* cpu){
-    set_ime(cpu, false);
+    cpu->reg.ime = false;
     return 1;
 }
 uint8_t ei(Cpu* cpu){
-    set_ime(cpu, true);
+    cpu->reg.ime = true;
     return 1;
 }
 uint8_t halt(Cpu* cpu){

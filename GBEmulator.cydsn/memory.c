@@ -42,6 +42,10 @@ uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
         return memory->vram[address - VRAM_START];
     } else if (WRAM_START <= address && address < WRAM_END) {
         return memory->wram[address - WRAM_START];
+    } else if (address == INTERRUPT_ENABLE){
+        return memory->interrupt_enable;
+    } else if (address == INTERRUPT_FLAG){
+        return memory->interrupt_flag;
     }
     // TODO add other memory access locations...
     return 0;
@@ -55,5 +59,9 @@ void write_mem(Memory* memory, uint16_t address, uint8_t data) {
         memory->vram[address - VRAM_START] = data;
     } else if (WRAM_START <= address && address < WRAM_END) {
         memory->wram[address - WRAM_START] = data;
+    } else if (address == INTERRUPT_ENABLE) {
+        memory->interrupt_enable = data;
+    } else if (address == INTERRUPT_FLAG){
+        memory->interrupt_flag = data;
     }
 }

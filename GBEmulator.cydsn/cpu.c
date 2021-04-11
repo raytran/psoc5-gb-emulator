@@ -10,10 +10,6 @@ void reset_cpu(Cpu* cpu) {
     reset_registers(&cpu->reg);
 }
 
-void set_ime(Cpu *cpu, bool interrupts_on){
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-}
-
 // Assumes that the pc is already incremented to point to the next instr
 int execute_normal(Cpu* cpu, uint8_t instruction){
     switch (instruction){

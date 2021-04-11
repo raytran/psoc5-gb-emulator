@@ -44,7 +44,9 @@ typedef struct Registers {
     
     uint16_t pc;    // program counter
     uint16_t sp;    // stack pointer
+    bool ime;       // interrupt enable
 } Registers;
+
 // Reset all registers to 0
 void reset_registers(Registers *regs);
 bool get_zero_flag(Registers* regs);

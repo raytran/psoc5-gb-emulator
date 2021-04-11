@@ -16,7 +16,4 @@ typedef struct Cpu {
 int tick(Cpu* cpu);
 // Resets the cpu to the starting state, clearing all registers etc
 void reset_cpu(Cpu *cpu);
-
-// interrupt master enable flag
-void set_ime(Cpu *cpu, bool interrupts_on);
 #endif
