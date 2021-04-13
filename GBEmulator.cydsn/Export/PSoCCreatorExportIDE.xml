@@ -6,8 +6,8 @@
     <Toolchain Name="ARM GCC Generic" Selected="True">
       <Tool Name="prebuild" Command="" Options="" />
       <Tool Name="assembler" Command="arm-none-eabi-as.exe" Options="-mcpu=cortex-m3 -mthumb -I. -IGenerated_Source\PSoC5 -alh=${OutputDir}/${CompileFile}.lst -g -W" />
-      <Tool Name="compiler" Command="arm-none-eabi-gcc.exe" Options="-mcpu=cortex-m3 -mthumb -Wno-main -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=${OutputDir}/${CompileFile}.lst -g -D NDEBUG -Wall -ffunction-sections -Os -ffat-lto-objects -O3" />
-      <Tool Name="linker" Command="arm-none-eabi-gcc.exe" Options="-mcpu=cortex-m3 -mthumb -g -ffunction-sections -Os -ffat-lto-objects -L Generated_Source\PSoC5 -L ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC\libemWin_nosnts_cm3_gcc.a -Wl,-Map,${OutputDir}/${ProjectShortName}.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections" />
+      <Tool Name="compiler" Command="arm-none-eabi-gcc.exe" Options="-mcpu=cortex-m3 -mthumb -Wno-main -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=${OutputDir}/${CompileFile}.lst -g -D NDEBUG -Wall -ffunction-sections -finline-functions -O3 -ffat-lto-objects" />
+      <Tool Name="linker" Command="arm-none-eabi-gcc.exe" Options="-mcpu=cortex-m3 -mthumb -g -ffunction-sections -finline-functions -O3 -ffat-lto-objects -L Generated_Source\PSoC5 -L ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC\libemWin_nosnts_cm3_gcc.a -Wl,-Map,${OutputDir}/${ProjectShortName}.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections" />
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
     <Toolchain Name="ARM MDK Generic" Selected="False">
