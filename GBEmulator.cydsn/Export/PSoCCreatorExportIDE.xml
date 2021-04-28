@@ -6,26 +6,26 @@
     <Toolchain Name="ARM GCC Generic" Selected="True">
       <Tool Name="prebuild" Command="" Options="" />
       <Tool Name="assembler" Command="arm-none-eabi-as.exe" Options="-mcpu=cortex-m3 -mthumb -I. -IGenerated_Source\PSoC5 -alh=${OutputDir}/${CompileFile}.lst -g -W" />
-      <Tool Name="compiler" Command="arm-none-eabi-gcc.exe" Options="-mcpu=cortex-m3 -mthumb -Wno-main -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=${OutputDir}/${CompileFile}.lst -g -D NDEBUG -Wall -ffunction-sections -finline-functions -O3 -ffat-lto-objects" />
-      <Tool Name="linker" Command="arm-none-eabi-gcc.exe" Options="-mcpu=cortex-m3 -mthumb -g -ffunction-sections -finline-functions -O3 -ffat-lto-objects -L Generated_Source\PSoC5 -L ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC\libemWin_nosnts_cm3_gcc.a -Wl,-Map,${OutputDir}/${ProjectShortName}.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections" />
+      <Tool Name="compiler" Command="arm-none-eabi-gcc.exe" Options="-mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=${OutputDir}/${CompileFile}.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3" />
+      <Tool Name="linker" Command="arm-none-eabi-gcc.exe" Options="-mcpu=cortex-m3 -mthumb -L Generated_Source\PSoC5 -L ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC\libemWin_nosnts_cm3_gcc.a -Wl,-Map,${OutputDir}/${ProjectShortName}.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -finline-functions -O3 -ffat-lto-objects" />
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
     <Toolchain Name="ARM MDK Generic" Selected="False">
       <Tool Name="prebuild" Command="" Options="" />
-      <Tool Name="assembler" Command="armasm.exe" Options="--cpu=Cortex-M3 --diag_style=gnu --thumb -i. -iGenerated_Source\PSoC5 -g --list=${OutputDir}/${CompileFile}.lst" />
-      <Tool Name="compiler" Command="armcc.exe" Options="--cpu=Cortex-M3 --diag_style=gnu --diag_suppress=951 -I. -IGenerated_Source\PSoC5 --list --signed_chars -g -D NDEBUG -Ospace --split_sections" />
+      <Tool Name="assembler" Command="armasm.exe" Options="--cpu=Cortex-M3 --diag_style=gnu --thumb -i. -iGenerated_Source\PSoC5 -g --list=${OutputDir}/${CompileFile}.lst &quot;--predefine=__MICROLIB SETA 1&quot;" />
+      <Tool Name="compiler" Command="armcc.exe" Options="--cpu=Cortex-M3 --C99 --diag_style=gnu -I. -IGenerated_Source\PSoC5 --list --signed_chars -g -D NDEBUG -Ospace --split_sections -D__MICROLIB" />
       <Tool Name="linker" Command="armlink.exe" Options="--cpu=Cortex-M3 --diag_style=gnu --no_startup --library_type=microlib --map --list ${OutputDir}/${ProjectShortName}.map --scatter Generated_Source\PSoC5\Cm3RealView.scat" />
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
     <Toolchain Name="ARM IAR Generic" Selected="False">
       <Tool Name="prebuild" Command="" Options="" />
       <Tool Name="assembler" Command="iasmarm.exe" Options="--cpu Cortex-M3 -I. -IGenerated_Source\PSoC5 -s+ -M&lt;&gt; -w+ -r -DNDEBUG --fpu None" />
-      <Tool Name="compiler" Command="iccarm.exe" Options="--cpu Cortex-M3 -I. -IGenerated_Source\PSoC5 -D NDEBUG --debug --endian=little -e --fpu=None --no_wrap_diagnostics" />
+      <Tool Name="compiler" Command="iccarm.exe" Options="--cpu Cortex-M3 -I. -IGenerated_Source\PSoC5 -D NDEBUG -D CY_CORE_ID=0 -I. -IGenerated_Source\PSoC5 -D NDEBUG --debug --endian=little -e --fpu=None --no_wrap_diagnostics" />
       <Tool Name="linker" Command="ilinkarm.exe" Options="--semihosting --entry __iar_program_start --config Generated_Source\PSoC5\Cm3Iar.icf" />
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
   </Toolchains>
-  <Project Name="GBEmulator" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" Version="5.40" Type="Normal">
+  <Project Name="GBEmulator" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" Version="6.10" Type="Normal">
     <CMSIS_SVD_File>GBEmulator.svd</CMSIS_SVD_File>
     <Datasheet />
     <LinkerFiles>
@@ -34,112 +34,115 @@
       <LinkerFile Toolchain="ARM IAR Generic">.\Generated_Source\PSoC5\Cm3Iar.icf</LinkerFile>
     </LinkerFiles>
     <Folders>
-      <Folder BuildType="BUILD" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
+      <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
         <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
-          <File BuildType="BUILD" Toolchain="">.\main.c</File>
-          <File BuildType="BUILD" Toolchain="">.\cpu.c</File>
-          <File BuildType="BUILD" Toolchain="">.\rom.c</File>
-          <File BuildType="BUILD" Toolchain="">.\memory.c</File>
-          <File BuildType="BUILD" Toolchain="">.\registers.c</File>
-          <File BuildType="BUILD" Toolchain="">.\instruction_set.c</File>
-          <File BuildType="BUILD" Toolchain="">.\GUI_X.c</File>
-          <File BuildType="BUILD" Toolchain="">.\GUIConf.c</File>
-          <File BuildType="BUILD" Toolchain="">.\LCDConf.c</File>
-          <File BuildType="BUILD" Toolchain="">.\tft.c</File>
-          <File BuildType="BUILD" Toolchain="">.\cyapicallbacks.h</File>
-          <File BuildType="BUILD" Toolchain="">.\registers.h</File>
-          <File BuildType="BUILD" Toolchain="">.\memory.h</File>
-          <File BuildType="BUILD" Toolchain="">.\cpu.h</File>
-          <File BuildType="BUILD" Toolchain="">.\rom.h</File>
-          <File BuildType="BUILD" Toolchain="">.\instruction_set.h</File>
-          <File BuildType="BUILD" Toolchain="">.\GUIDRV_FlexColor.h</File>
-          <File BuildType="BUILD" Toolchain="">.\LCDConf.h</File>
-          <File BuildType="BUILD" Toolchain="">.\tft.h</File>
+          <File BuildType="BUILD" Toolchain="">main.c</File>
+          <File BuildType="BUILD" Toolchain="">cpu.c</File>
+          <File BuildType="BUILD" Toolchain="">rom.c</File>
+          <File BuildType="BUILD" Toolchain="">memory.c</File>
+          <File BuildType="BUILD" Toolchain="">registers.c</File>
+          <File BuildType="BUILD" Toolchain="">instruction_set.c</File>
+          <File BuildType="BUILD" Toolchain="">GUI_X.c</File>
+          <File BuildType="BUILD" Toolchain="">GUIConf.c</File>
+          <File BuildType="BUILD" Toolchain="">LCDConf.c</File>
+          <File BuildType="BUILD" Toolchain="">tft.c</File>
+          <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
+          <File BuildType="BUILD" Toolchain="">registers.h</File>
+          <File BuildType="BUILD" Toolchain="">memory.h</File>
+          <File BuildType="BUILD" Toolchain="">cpu.h</File>
+          <File BuildType="BUILD" Toolchain="">rom.h</File>
+          <File BuildType="BUILD" Toolchain="">instruction_set.h</File>
+          <File BuildType="BUILD" Toolchain="">GUIDRV_FlexColor.h</File>
+          <File BuildType="BUILD" Toolchain="">LCDConf.h</File>
+          <File BuildType="BUILD" Toolchain="">tft.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\Generated_Source\PSoC5">
         <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cyfitter_cfg.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cyfitter_cfg.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cymetadata.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cydevice.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cydevicegnu.inc</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cydevicerv.inc</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cydeviceiar.inc</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cydevice_trm.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cydevicegnu_trm.inc</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cydevicerv_trm.inc</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cydeviceiar_trm.inc</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cyfittergnu.inc</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cyfitterrv.inc</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cyfitteriar.inc</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cyfitter.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cydisabledsheets.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cycodeshareimport.ld</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cycodeshareexport.ld</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cycodeshareimport.scat</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cm3gcc.ld</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Cm3RealView.scat</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Cm3Start.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\core_cm3.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\core_cm3_psoc5.h</File>
-          <File BuildType="BUILD" Toolchain="ARM GCC Generic">.\Generated_Source\PSoC5\CyBootAsmGnu.s</File>
-          <File BuildType="BUILD" Toolchain="ARM MDK Generic">.\Generated_Source\PSoC5\CyBootAsmRv.s</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\CyDmac.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\CyDmac.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\CyFlash.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\CyFlash.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\CyLib.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\CyLib.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cypins.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cyPm.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cyPm.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\CySpc.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\CySpc.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cytypes.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cyutils.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\core_cmFunc.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\core_cmInstr.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Cm3Iar.icf</File>
-          <File BuildType="BUILD" Toolchain="ARM IAR Generic">.\Generated_Source\PSoC5\CyBootAsmIar.s</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cmsis_armcc.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cmsis_gcc.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\project.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SPIM_1.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SPIM_1.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SPIM_1_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SPIM_1_INT.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SPIM_1_PVT.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\MISO_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\MISO.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\MISO.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\MOSI_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\MOSI.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\MOSI.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SCLK_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SCLK.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SCLK.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SS_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SS.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SS.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DC_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DC.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DC.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\RESET_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\RESET.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\RESET.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\LED_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\LED.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\LED.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SPIM_1_IntClock.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SPIM_1_IntClock.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Clock_1.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Clock_1.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Timer_1.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Timer_1.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Timer_1_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Timer_1_interrupt.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Timer_1_interrupt.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitter_cfg.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitter_cfg.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cymetadata.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydevice.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydevicegnu.inc</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydevicerv.inc</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydeviceiar.inc</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydevice_trm.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydevicegnu_trm.inc</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydevicerv_trm.inc</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydeviceiar_trm.inc</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfittergnu.inc</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitterrv.inc</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitteriar.inc</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitter.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydisabledsheets.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cycodeshareimport.ld</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cycodeshareexport.ld</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cycodeshareimport.scat</File>
+          <File BuildType="BUILD" Toolchain="ARM GCC Generic">Generated_Source\PSoC5\cm3gcc.ld</File>
+          <File BuildType="BUILD" Toolchain="ARM MDK Generic">Generated_Source\PSoC5\Cm3RealView.scat</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Cm3Start.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\core_cm3.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\core_cm3_psoc5.h</File>
+          <File BuildType="BUILD" Toolchain="ARM GCC Generic">Generated_Source\PSoC5\CyBootAsmGnu.s</File>
+          <File BuildType="BUILD" Toolchain="ARM MDK Generic">Generated_Source\PSoC5\CyBootAsmRv.s</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\CyDmac.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\CyDmac.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\CyFlash.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\CyFlash.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\CyLib.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\CyLib.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cypins.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyPm.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyPm.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\CySpc.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\CySpc.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cytypes.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyutils.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\core_cmFunc.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\core_cmInstr.h</File>
+          <File BuildType="BUILD" Toolchain="ARM IAR Generic">Generated_Source\PSoC5\Cm3Iar.icf</File>
+          <File BuildType="BUILD" Toolchain="ARM IAR Generic">Generated_Source\PSoC5\CyBootAsmIar.s</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cmsis_armcc.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cmsis_gcc.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cmsis_compiler.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\project.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPIM_1.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPIM_1.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPIM_1_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPIM_1_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPIM_1_PVT.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\MISO_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\MISO.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\MISO.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\MOSI_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\MOSI.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\MOSI.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SCLK_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SCLK.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SCLK.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SS_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SS.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SS.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DC_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DC.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DC.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RESET_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RESET.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RESET.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\LED_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\LED.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\LED.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPIM_1_IntClock.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPIM_1_IntClock.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Clock_1.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Clock_1.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_1.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_1.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_1_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_1_interrupt.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_1_interrupt.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cy_em_eeprom.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cy_em_eeprom.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\Export\ARM_GCC_Generic">
@@ -185,12 +188,6 @@
         <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM7">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
-      </Folder>
-      <Folder BuildType="EXCLUDE" Path=".\Generated_Source\PSoC3">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
-      </Folder>
-      <Folder BuildType="EXCLUDE" Path=".\Generated_Source\PSoC4">
         <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
     </Folders>

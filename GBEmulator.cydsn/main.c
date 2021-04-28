@@ -21,17 +21,17 @@ unsigned long total_cycles = 0;
 unsigned long total_instrs = 0;
 char buffer[50];
 
-int seconds = 0;
+double seconds = 0;
 CY_ISR(Timer_1_Handler){
-    sprintf(buffer, "On-time (sec): %d \n"
+    sprintf(buffer, "On-time (sec): %d  \n"
         "Instrs/second: %lu \n"
         "Cycles/second: %lu \n"
-        "Machine Cycles/second:\n %lu ", seconds, total_instrs/4, total_cycles, total_cycles/4);
+        "Machine Cycles/second:\n %lu ", (int) seconds, total_instrs*60/*/4*/, total_cycles, total_cycles*60/*/4*/);
     total_cycles = 0;
     total_instrs = 0;
     
     GUI_DispStringAt(buffer, 0, 0); 
-    seconds += 4;
+    seconds += 0.01666;
     Timer_1_ReadStatusRegister(); //Clear timer register to leave interrupt
 }
 

@@ -11,7 +11,7 @@ void reset_cpu(Cpu* cpu) {
 }
 
 // Assumes that the pc is already incremented to point to the next instr
-int execute_normal(Cpu* cpu, uint8_t instruction){
+static inline int execute_normal(Cpu* cpu, uint8_t instruction){
     switch (instruction){
         case 0x0: return nop(cpu); //NOP
         case 0x1: return ld_r16_n16(cpu, &cpu->reg.bc); //LD BC,u16
@@ -273,7 +273,7 @@ int execute_normal(Cpu* cpu, uint8_t instruction){
     return 0;
 }
 
-int execute_cb_prefix(Cpu* cpu, uint8_t instruction){
+static inline int execute_cb_prefix(Cpu* cpu, uint8_t instruction){
     switch (instruction){
         case 0x0: return rlc_r8(cpu, &cpu->reg.b); //RLC B
         case 0x1: return rlc_r8(cpu, &cpu->reg.c); //RLC C
