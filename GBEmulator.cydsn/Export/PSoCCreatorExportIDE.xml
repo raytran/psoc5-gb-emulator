@@ -46,6 +46,7 @@
           <File BuildType="BUILD" Toolchain="">GUIConf.c</File>
           <File BuildType="BUILD" Toolchain="">LCDConf.c</File>
           <File BuildType="BUILD" Toolchain="">tft.c</File>
+          <File BuildType="BUILD" Toolchain="">gpu.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">registers.h</File>
           <File BuildType="BUILD" Toolchain="">memory.h</File>
@@ -55,6 +56,7 @@
           <File BuildType="BUILD" Toolchain="">GUIDRV_FlexColor.h</File>
           <File BuildType="BUILD" Toolchain="">LCDConf.h</File>
           <File BuildType="BUILD" Toolchain="">tft.h</File>
+          <File BuildType="BUILD" Toolchain="">gpu.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\Generated_Source\PSoC5">

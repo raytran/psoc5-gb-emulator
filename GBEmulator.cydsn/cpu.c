@@ -6,7 +6,6 @@
 
 void reset_cpu(Cpu* cpu) {
     cpu->inBios = true;
-    reset_memory(&cpu->mem);
     reset_registers(&cpu->reg);
 }
 

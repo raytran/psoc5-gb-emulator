@@ -5,8 +5,8 @@
 #include "stdint.h"
 #include "memory.h"
 typedef struct Cpu {
+    Memory* mem;
     Registers reg;
-    Memory mem;
     bool inBios;
 } Cpu;
 

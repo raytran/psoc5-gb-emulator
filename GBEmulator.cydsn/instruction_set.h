@@ -18,11 +18,11 @@ static inline void increment_pc(Cpu* cpu){
 
 static inline void push_stack_u8(Cpu* cpu, uint8_t value){
     cpu->reg.sp--;
-    write_mem(&cpu->mem, cpu->reg.sp, value);
+    write_mem(cpu->mem, cpu->reg.sp, value);
 } 
 
 static inline uint8_t pop_stack_u8(Cpu* cpu){
-    uint8_t result = fetch(&cpu->mem, cpu->reg.sp, cpu->inBios);
+    uint8_t result = fetch(cpu->mem, cpu->reg.sp, cpu->inBios);
     cpu->reg.sp++;
     return result;
 }
@@ -99,7 +99,7 @@ static inline void add_to_sp(Cpu* cpu, int8_t offset){
 }
 
 static inline uint8_t fetch_and_increment_pc(Cpu* cpu){
-    uint8_t data = fetch(&cpu->mem, cpu->reg.pc, cpu->inBios);
+    uint8_t data = fetch(cpu->mem, cpu->reg.pc, cpu->inBios);
     increment_pc(cpu);
     return data;
 }
@@ -125,7 +125,7 @@ static inline uint8_t adc_a_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t adc_a_mhl(Cpu* cpu){
-    adc_a_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
+    adc_a_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
     return 2;
 }
 static inline uint8_t adc_a_n8(Cpu* cpu){
@@ -145,7 +145,7 @@ static inline uint8_t add_a_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t add_a_mhl(Cpu* cpu){
-    add_a_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
+    add_a_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
     return 2;
 }
 static inline uint8_t add_a_n8(Cpu* cpu){
@@ -164,7 +164,7 @@ static inline uint8_t and_a_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t and_a_mhl(Cpu* cpu){
-    and_a_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
+    and_a_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
     return 2;
 }
 static inline uint8_t and_a_n8(Cpu* cpu){
@@ -182,7 +182,7 @@ static inline uint8_t cp_a_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t cp_a_mhl(Cpu* cpu){
-    cp_a_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
+    cp_a_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
     return 2;
 }
 static inline uint8_t cp_a_n8(Cpu* cpu){
@@ -202,8 +202,8 @@ static inline uint8_t dec_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t dec_mhl(Cpu* cpu){
-    uint8_t num = fetch(&cpu->mem, cpu->reg.hl, cpu->inBios);
-    write_mem(&cpu->mem, cpu->reg.hl, dec_u8(cpu, num));
+    uint8_t num = fetch(cpu->mem, cpu->reg.hl, cpu->inBios);
+    write_mem(cpu->mem, cpu->reg.hl, dec_u8(cpu, num));
     return 3;
 }
 static inline uint8_t inc_u8(Cpu* cpu, uint8_t num){
@@ -219,8 +219,8 @@ static inline uint8_t inc_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t inc_mhl(Cpu* cpu){
-    uint8_t num = fetch(&cpu->mem, cpu->reg.hl, cpu->inBios);
-    write_mem(&cpu->mem, cpu->reg.hl, inc_u8(cpu, num));
+    uint8_t num = fetch(cpu->mem, cpu->reg.hl, cpu->inBios);
+    write_mem(cpu->mem, cpu->reg.hl, inc_u8(cpu, num));
     return 3;
 }
 static inline void or_a_b(Cpu* cpu, uint8_t b){
@@ -235,7 +235,7 @@ static inline uint8_t or_a_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t or_a_mhl(Cpu* cpu){
-    or_a_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
+    or_a_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
     return 2;
 }
 static inline uint8_t or_a_n8(Cpu* cpu){
@@ -255,7 +255,7 @@ static inline uint8_t sbc_a_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t sbc_a_mhl(Cpu* cpu){
-    sbc_a_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
+    sbc_a_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
     return 2;
 }
 static inline uint8_t sbc_a_n8(Cpu* cpu){
@@ -274,7 +274,7 @@ static inline uint8_t sub_a_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t sub_a_mhl(Cpu* cpu){
-    sub_a_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
+    sub_a_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
     return 2;
 }
 static inline uint8_t sub_a_n8(Cpu* cpu){
@@ -293,7 +293,7 @@ static inline uint8_t xor_a_r8(Cpu* cpu, uint8_t* reg){
     return 1;
 }
 static inline uint8_t xor_a_mhl(Cpu* cpu){
-    xor_a_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
+    xor_a_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
     return 2;
 }
 static inline uint8_t xor_a_n8(Cpu* cpu){
@@ -329,7 +329,7 @@ static inline uint8_t bit_u3_r8(Cpu* cpu, uint8_t position, uint8_t* reg){
     return 2;
 }
 static inline uint8_t bit_u3_mhl(Cpu* cpu, uint8_t position){
-    bit_u3_b(cpu, position, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
+    bit_u3_b(cpu, position, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
     return 3;
 }
 // returns the new value
@@ -341,8 +341,8 @@ static inline uint8_t res_u3_r8(Cpu* cpu, uint8_t position, uint8_t* reg){
     return 2;
 }
 static inline uint8_t res_u3_mhl(Cpu* cpu, uint8_t position){
-    uint8_t new_val = res_u3_b(cpu, position, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = res_u3_b(cpu, position, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 // Returns the new value
@@ -354,8 +354,8 @@ static inline uint8_t set_u3_r8(Cpu* cpu, uint8_t position, uint8_t* reg){
     return 2;
 }
 static inline uint8_t set_u3_mhl(Cpu* cpu, uint8_t position){
-    uint8_t new_val = set_u3_b(cpu, position, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = set_u3_b(cpu, position, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 // Returns new value
@@ -372,8 +372,8 @@ static inline uint8_t swap_r8(Cpu* cpu, uint8_t* reg){
     return 2;
 }
 static inline uint8_t swap_mhl(Cpu* cpu){
-    uint8_t new_val = swap_nibbles(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = swap_nibbles(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 static inline uint8_t rl_b(Cpu* cpu, uint8_t b){
@@ -390,8 +390,8 @@ static inline uint8_t rl_r8(Cpu* cpu, uint8_t* reg){
     return 2;
 }
 static inline uint8_t rl_mhl(Cpu* cpu){
-    uint8_t new_val = rl_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = rl_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 static inline uint8_t rla(Cpu* cpu){
@@ -416,8 +416,8 @@ static inline uint8_t rlc_r8(Cpu* cpu, uint8_t* reg){
     return 2;
 }
 static inline uint8_t rlc_mhl(Cpu* cpu){
-    uint8_t new_val = rlc_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = rlc_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 static inline uint8_t rlca(Cpu* cpu){
@@ -442,8 +442,8 @@ static inline uint8_t rr_r8(Cpu* cpu, uint8_t* reg){
     return 2;
 }
 static inline uint8_t rr_mhl(Cpu* cpu){
-    uint8_t new_val = rr_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = rr_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 static inline uint8_t rra(Cpu* cpu){
@@ -468,8 +468,8 @@ static inline uint8_t rrc_r8(Cpu* cpu, uint8_t* reg){
     return 2;
 }
 static inline uint8_t rrc_mhl(Cpu* cpu){
-    uint8_t new_val = rrc_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = rrc_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 static inline uint8_t rrca(Cpu* cpu){
@@ -493,8 +493,8 @@ static inline uint8_t sla_r8(Cpu* cpu, uint8_t* reg){
     return 2;
 }
 static inline uint8_t sla_mhl(Cpu* cpu){
-    uint8_t new_val = sla_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = sla_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 static inline uint8_t sra_b(Cpu* cpu, uint8_t b){
@@ -510,8 +510,8 @@ static inline uint8_t sra_r8(Cpu* cpu, uint8_t* reg){
     return 2;
 }
 static inline uint8_t sra_mhl(Cpu* cpu){
-    uint8_t new_val = sra_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = sra_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 static inline uint8_t srl_b(Cpu* cpu, uint8_t b){
@@ -527,8 +527,8 @@ static inline uint8_t srl_r8(Cpu* cpu, uint8_t* reg){
     return 2;
 }
 static inline uint8_t srl_mhl(Cpu* cpu){
-    uint8_t new_val = srl_b(cpu, fetch(&cpu->mem, cpu->reg.hl, cpu->inBios));
-    write_mem(&cpu->mem, cpu->reg.hl, new_val);
+    uint8_t new_val = srl_b(cpu, fetch(cpu->mem, cpu->reg.hl, cpu->inBios));
+    write_mem(cpu->mem, cpu->reg.hl, new_val);
     return 4;
 }
 static inline uint8_t ld_r8_r8(Cpu* cpu, uint8_t* a, uint8_t* b){
@@ -544,66 +544,66 @@ static inline uint8_t ld_r16_n16(Cpu* cpu, uint16_t* reg){
     return 3;
 }
 static inline uint8_t ld_mhl_r8(Cpu* cpu, uint8_t* reg){
-    write_mem(&cpu->mem, cpu->reg.hl, *reg);
+    write_mem(cpu->mem, cpu->reg.hl, *reg);
     return 2;
 }
 static inline uint8_t ld_mhl_n8(Cpu* cpu){
-    write_mem(&cpu->mem, cpu->reg.hl, fetch_and_increment_pc(cpu));
+    write_mem(cpu->mem, cpu->reg.hl, fetch_and_increment_pc(cpu));
     return 3;
 }
 static inline uint8_t ld_r8_mhl(Cpu* cpu, uint8_t* reg){
-    *reg = fetch(&cpu->mem, cpu->reg.hl, cpu->inBios);
+    *reg = fetch(cpu->mem, cpu->reg.hl, cpu->inBios);
     return 2;
 }
 static inline uint8_t ld_mr16_a(Cpu* cpu, uint16_t* reg){
-    write_mem(&cpu->mem, *reg, cpu->reg.a);
+    write_mem(cpu->mem, *reg, cpu->reg.a);
     return 2;
 }
 static inline uint8_t ld_mn16_a(Cpu* cpu){
-    write_mem(&cpu->mem, fetch_and_increment_pc_twice(cpu), cpu->reg.a);
+    write_mem(cpu->mem, fetch_and_increment_pc_twice(cpu), cpu->reg.a);
     return 4;
 }
 static inline uint8_t ldh_mn16_a(Cpu* cpu){
-    write_mem(&cpu->mem, 0xFF00 + fetch_and_increment_pc(cpu), cpu->reg.a);
+    write_mem(cpu->mem, 0xFF00 + fetch_and_increment_pc(cpu), cpu->reg.a);
     return 3;
 }
 static inline uint8_t ldh_mc_a(Cpu* cpu){
-    write_mem(&cpu->mem, 0xFF00 + cpu->reg.c, cpu->reg.a);
+    write_mem(cpu->mem, 0xFF00 + cpu->reg.c, cpu->reg.a);
     return 2;
 }
 static inline uint8_t ld_a_mr16(Cpu* cpu, uint16_t* reg){
-    cpu->reg.a = fetch(&cpu->mem, *reg, cpu->inBios);
+    cpu->reg.a = fetch(cpu->mem, *reg, cpu->inBios);
     return 2;
 }
 static inline uint8_t ld_a_mn16(Cpu* cpu){
-    cpu->reg.a = fetch(&cpu->mem, fetch_and_increment_pc_twice(cpu), cpu->inBios);
+    cpu->reg.a = fetch(cpu->mem, fetch_and_increment_pc_twice(cpu), cpu->inBios);
     return 4;
 }
 static inline uint8_t ldh_a_mn16(Cpu* cpu){
-    cpu->reg.a = fetch(&cpu->mem, 0xFF00 + fetch_and_increment_pc(cpu), cpu->inBios);
+    cpu->reg.a = fetch(cpu->mem, 0xFF00 + fetch_and_increment_pc(cpu), cpu->inBios);
     return 3;
 }
 static inline uint8_t ldh_a_mc(Cpu* cpu){
-    cpu->reg.a = fetch(&cpu->mem, 0xFF00 + cpu->reg.c, cpu->inBios);
+    cpu->reg.a = fetch(cpu->mem, 0xFF00 + cpu->reg.c, cpu->inBios);
     return 2;
 }
 static inline uint8_t ld_mhli_a(Cpu* cpu){
-    write_mem(&cpu->mem, cpu->reg.hl, cpu->reg.a);
+    write_mem(cpu->mem, cpu->reg.hl, cpu->reg.a);
     cpu->reg.hl++;
     return 2;
 }
 static inline uint8_t ld_mhld_a(Cpu* cpu){
-    write_mem(&cpu->mem, cpu->reg.hl, cpu->reg.a);
+    write_mem(cpu->mem, cpu->reg.hl, cpu->reg.a);
     cpu->reg.hl--;
     return 2;
 }
 static inline uint8_t ld_a_mhli(Cpu* cpu){
-    cpu->reg.a = fetch(&cpu->mem, cpu->reg.hl, cpu->inBios);
+    cpu->reg.a = fetch(cpu->mem, cpu->reg.hl, cpu->inBios);
     cpu->reg.hl++;
     return 2;
 }
 static inline uint8_t ld_a_mhld(Cpu* cpu){
-    cpu->reg.a = fetch(&cpu->mem, cpu->reg.hl, cpu->inBios);
+    cpu->reg.a = fetch(cpu->mem, cpu->reg.hl, cpu->inBios);
     cpu->reg.hl--;
     return 2;
 }
@@ -731,8 +731,8 @@ static inline uint8_t ld_sp_n16(Cpu* cpu){
 }
 static inline uint8_t ld_mn16_sp(Cpu* cpu){
     uint16_t addr = fetch_and_increment_pc_twice(cpu);
-    write_mem(&cpu->mem, addr, cpu->reg.sp & 0x00FF);
-    write_mem(&cpu->mem, addr + 1, cpu->reg.sp & 0xFF00);
+    write_mem(cpu->mem, addr, cpu->reg.sp & 0x00FF);
+    write_mem(cpu->mem, addr + 1, cpu->reg.sp & 0xFF00);
     return 5;
 }
 static inline uint8_t ld_hl_sp_e8(Cpu* cpu){
