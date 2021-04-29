@@ -18,9 +18,7 @@
 #include "gpu.h"
 #include "tft.h"
 #include "debugfuncs.h"
-const bool DEBUG_MODE = true;
-const bool DEBUG_BREAKPOINT_ON = true;
-const int DEBUG_BREAKPOINT = 0x60; 
+#include "emumode.h"
 
 
 
@@ -53,9 +51,11 @@ CY_ISR(Timer_1_Handler){
 CY_ISR(button_press_1_handler){
     if (DEBUG_MODE){
         int cycles_taken = tick(&cpu);
+        tick_gpu(&gpu, cycles_taken);
         total_cycles += cycles_taken;
         total_instrs++;
-        debug_fmt_cpu_state(buffer, &cpu, &mem, total_instrs, total_cycles);
+        debug_fmt_cpu_state(buffer, &cpu, &mem, total_instrs, total_cycles, DEBUG_MEMORY_DISPLAY_LOC);
+      //  debug_show_full_vram(&mem);
         GUI_DispStringAt(buffer, 0, 0);
     }
 }
@@ -95,15 +95,13 @@ int main()
         write8_a1(EP >> 8);                 // set EP[15:0]
         write8_a1(EP & 0x00FF);
         
-//        update_framebuffer(&gpu, &mem);
-//       draw(&gpu);
-        
         
     }
     
 
     
     cpu.mem = &mem;
+    gpu.mem = &mem;
     reset_cpu(&cpu);
     reset_memory(&mem);
     cpu.inBios = true;
@@ -112,24 +110,28 @@ int main()
     if (DEBUG_MODE){
         for (;;){
             if (!DEBUG_BREAKPOINT_ON || cpu.reg.pc == DEBUG_BREAKPOINT){
-                debug_fmt_cpu_state(buffer, &cpu, &mem, total_instrs, total_cycles);
+                debug_fmt_cpu_state(buffer, &cpu, &mem, total_instrs, total_cycles, DEBUG_MEMORY_DISPLAY_LOC);
                 GUI_DispStringAt(buffer, 0, 0);
                 break;
             }
-            int cycles_taken = tick(&cpu);
+            int cycles_taken = tick(&cpu); 
+            tick_gpu(&gpu, cycles_taken);
             total_cycles += cycles_taken;
             total_instrs++;
         }
+    } else {
+        for(;;)
+        {
+           
+            int cycles_taken = tick(&cpu);
+            tick_gpu(&gpu, cycles_taken);
+            total_cycles += cycles_taken;
+            total_instrs++;
+        }
+    
     }
 
-    for(;;)
-    {
-           //draw(&gpu);                 // what the heck
-    
-      //  int cycles_taken = tick(&cpu);
-      //  total_cycles += cycles_taken;
-      //  total_instrs++;
-    }
+
 }
 
 /* [] END OF FILE */

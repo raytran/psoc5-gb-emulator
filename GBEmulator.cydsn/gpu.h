@@ -14,6 +14,8 @@ typedef struct Gpu {
 
 // processes the next tick of the GPU
 // Takes in the # of machine cycles that elapsed
-void tick_gpu(Gpu* gpu, Memory* mem, uint8_t delta_machine_cycles);
+void tick_gpu(Gpu* gpu, uint8_t delta_machine_cycles);
+// Renders the current line at mem->current_scan_line
+void renderLine(Memory* mem);
 
 #endif
