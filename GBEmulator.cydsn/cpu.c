@@ -46,7 +46,7 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0x1f: return rra(cpu); //RRA
         case 0x20: return jr_cc_e8(cpu, NZ); //JR NZ,i8
         case 0x21: return ld_r16_n16(cpu, &cpu->reg.hl); //LD HL,u16
-        case 0x22: return ld_mr16_a(cpu, &cpu->reg.hl); //LD (HL+),A
+        case 0x22: return ld_mhli_a(cpu); //LD (HL+),A
         case 0x23: return inc_r16(cpu, &cpu->reg.hl); //INC HL
         case 0x24: return inc_r8(cpu, &cpu->reg.h); //INC H
         case 0x25: return dec_r8(cpu, &cpu->reg.h); //DEC H
@@ -252,7 +252,7 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0xed:  //UNUSED
         case 0xee: return xor_a_n8(cpu); //XOR A,u8
         case 0xef: return rst_vec(cpu, 0x28); //RST 28h
-        case 0xf0: return ld_a_mn16(cpu); //LD A,(FF00+u8)
+        case 0xf0: return ldh_a_mn16(cpu); //LD A,(FF00+u8)
         case 0xf1: return pop_r16(cpu, &cpu->reg.af); //POP AF
         case 0xf2: return ldh_a_mc(cpu); //LD A,(FF00+C)
         case 0xf3: return di(cpu); //DI

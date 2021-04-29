@@ -292,6 +292,7 @@
     </Group>
     <Group key="Pin">
       <Data key="1c9a4ee2-455e-4afc-a591-d9d953ed5f09" value="SCLK" />
+      <Data key="8d318d8b-cf7b-4b6b-b02c-ab1c5c49d0ba" value="Button1" />
       <Data key="57cb535a-5c72-42aa-950c-09da59bd0569" value="SS" />
       <Data key="87013660-13b3-4c8f-86ae-ea9ce18a3fec" value="RESET" />
       <Data key="b83b7603-3f8b-44ba-9372-e75ac935c00d" value="DC" />
@@ -3387,6 +3388,11 @@
     <Group key="1c9a4ee2-455e-4afc-a591-d9d953ed5f09">
       <Group key="0">
         <Data key="Port Format" value="2,3" />
+      </Group>
+    </Group>
+    <Group key="8d318d8b-cf7b-4b6b-b02c-ab1c5c49d0ba">
+      <Group key="0">
+        <Data key="Port Format" value="1,2" />
       </Group>
     </Group>
     <Group key="57cb535a-5c72-42aa-950c-09da59bd0569">

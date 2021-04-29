@@ -42,10 +42,29 @@ uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
         return memory->vram[address - VRAM_START];
     } else if (WRAM_START <= address && address < WRAM_END) {
         return memory->wram[address - WRAM_START];
-    } else if (address == INTERRUPT_ENABLE){
-        return memory->interrupt_enable;
-    } else if (address == INTERRUPT_FLAG){
-        return memory->interrupt_flag;
+    } else if (OAM_START <= address && address < OAM_END){
+        return memory->oam[address - OAM_START];
+    } else if (ZERO_PAGE_START <= address && address < ZERO_PAGE_END){
+        return memory->zero_page[address - ZERO_PAGE_START];
+    }else {
+        switch (address){
+            case INTERRUPT_ENABLE_LOC:
+                return memory->interrupt_enable;
+            case INTERRUPT_FLAG_LOC:
+                return memory->interrupt_flag;    
+            case LCDC_LOC:
+                return memory->lcdc;
+            case LCD_STATUS_LOC:
+                return memory->lcdstatus;
+            case SCX_LOC:
+                return memory->scroll_x;
+            case SCY_LOC:
+                return memory->scroll_y;
+            case LY_LOC:
+                return memory->current_scan_line;
+            default: break;
+        }
+    
     }
     // TODO add other memory access locations...
     return 0;
@@ -59,9 +78,32 @@ void write_mem(Memory* memory, uint16_t address, uint8_t data) {
         memory->vram[address - VRAM_START] = data;
     } else if (WRAM_START <= address && address < WRAM_END) {
         memory->wram[address - WRAM_START] = data;
-    } else if (address == INTERRUPT_ENABLE) {
-        memory->interrupt_enable = data;
-    } else if (address == INTERRUPT_FLAG){
-        memory->interrupt_flag = data;
-    }
+    } else if (OAM_START <= address && address < OAM_END){
+        memory->oam[address - OAM_START] = data;
+    } else if (ZERO_PAGE_START <= address && address < ZERO_PAGE_END){
+        memory->zero_page[address - ZERO_PAGE_START] = data;
+    }else {
+        switch (address){
+            case INTERRUPT_ENABLE_LOC:
+            memory->interrupt_enable = data;
+            break;
+            case INTERRUPT_FLAG_LOC:
+            memory->interrupt_flag = data;
+            break;
+            case LCDC_LOC:
+            memory->lcdc = data;
+            break;
+            case LCD_STATUS_LOC:
+            memory->lcdstatus = data;
+            break;
+            case SCX_LOC:
+            memory->scroll_x = data;
+            break;
+            case SCY_LOC:
+            memory->scroll_y = data;
+            break;
+            default: break;
+        }
+    
+    } 
 }

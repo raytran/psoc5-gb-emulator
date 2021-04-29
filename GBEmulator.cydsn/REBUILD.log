@@ -1,9 +1,49 @@
---------------- Rebuild Started: 04/13/2021 15:39:24 Project: GBEmulator, Configuration: ARM GCC 5.4-2016-q2-update Release ---------------
-Deleting file ".\GBEmulator.cycdx"
-Deleting file ".\GBEmulator.svd"
+--------------- Rebuild Started: 04/28/2021 17:34:15 Project: GBEmulator, Configuration: ARM GCC 5.4-2016-q2-update Release ---------------
+Deleting file ".\CortexM3\ARM_GCC_541\Release\main.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\cpu.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\rom.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\memory.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\registers.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\instruction_set.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\GUI_X.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\GUIConf.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\LCDConf.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\tft.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\gpu.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\cyfitter_cfg.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\cymetadata.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\Cm3Start.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\CyBootAsmGnu.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\CyDmac.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\CyFlash.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\CyLib.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\cyPm.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\CySpc.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\cyutils.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\SPIM_1.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\SPIM_1_PM.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\SPIM_1_INT.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\MISO.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\MOSI.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\SCLK.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\SS.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\DC.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\RESET.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\LED.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\SPIM_1_IntClock.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\Clock_1.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\Timer_1.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\Timer_1_PM.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\Timer_1_interrupt.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\cy_em_eeprom.o"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\GBEmulator.hex"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\GBEmulator.elf"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\GBEmulator.map"
 Deleting file ".\GBEmulator.rpt"
 Deleting file ".\GBEmulator_timing.html"
-cydsfit.exe -.appdatapath "C:\Users\raytr\AppData\Local\Cypress Semiconductor\PSoC Creator\4.4" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\GBEmulator.cyprj -d CY8C5888LTI-LP097 -s D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\Generated_Source\PSoC5 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
+Deleting file ".\CortexM3\ARM_GCC_541\Release\.deps\SOURCE_C__ARM_GCC_GENERIC.P"
+Deleting file ".\CortexM3\ARM_GCC_541\Release\.deps\SOURCE_ASM__ARM_GCC_GENERIC.P"
+cydsfit.exe -.appdatapath "C:\Users\Ray\AppData\Local\Cypress Semiconductor\PSoC Creator\4.4" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\GBEmulator.cyprj -d CY8C5888LTI-LP097 -s D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\Generated_Source\PSoC5 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
 Elaborating Design...
 HDL Generation...
 Synthesis...
@@ -23,22 +63,27 @@ arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\I
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/cpu.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c cpu.c -o .\CortexM3\ARM_GCC_541\Release\cpu.o
 In file included from cpu.c:5:0:
 instruction_set.h: In function 'ld_mn16_sp':
-instruction_set.h:735:36: warning: overflow in implicit constant conversion [-Woverflow]
-     write_mem(&cpu->mem, addr + 1, cpu->reg.sp & 0xFF00);
-                                    ^
+instruction_set.h:735:35: warning: overflow in implicit constant conversion [-Woverflow]
+     write_mem(cpu->mem, addr + 1, cpu->reg.sp & 0xFF00);
+                                   ^
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/rom.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c rom.c -o .\CortexM3\ARM_GCC_541\Release\rom.o
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/memory.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c memory.c -o .\CortexM3\ARM_GCC_541\Release\memory.o
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/registers.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c registers.c -o .\CortexM3\ARM_GCC_541\Release\registers.o
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/instruction_set.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c instruction_set.c -o .\CortexM3\ARM_GCC_541\Release\instruction_set.o
 In file included from instruction_set.c:1:0:
 instruction_set.h: In function 'ld_mn16_sp':
-instruction_set.h:735:36: warning: overflow in implicit constant conversion [-Woverflow]
-     write_mem(&cpu->mem, addr + 1, cpu->reg.sp & 0xFF00);
-                                    ^
+instruction_set.h:735:35: warning: overflow in implicit constant conversion [-Woverflow]
+     write_mem(cpu->mem, addr + 1, cpu->reg.sp & 0xFF00);
+                                   ^
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/GUI_X.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c GUI_X.c -o .\CortexM3\ARM_GCC_541\Release\GUI_X.o
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/GUIConf.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c GUIConf.c -o .\CortexM3\ARM_GCC_541\Release\GUIConf.o
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/LCDConf.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c LCDConf.c -o .\CortexM3\ARM_GCC_541\Release\LCDConf.o
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/tft.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c tft.c -o .\CortexM3\ARM_GCC_541\Release\tft.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/gpu.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c gpu.c -o .\CortexM3\ARM_GCC_541\Release\gpu.o
+gpu.c: In function 'draw':
+gpu.c:19:18: warning: overflow in implicit constant conversion [-Woverflow]
+        write8_a1(color & 0xFF00);     // write the color stored in the frame buffer
+                  ^
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/cyfitter_cfg.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c Generated_Source\PSoC5\cyfitter_cfg.c -o .\CortexM3\ARM_GCC_541\Release\cyfitter_cfg.o
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/cymetadata.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c Generated_Source\PSoC5\cymetadata.c -o .\CortexM3\ARM_GCC_541\Release\cymetadata.o
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5\nosnts -I..\..\emWinGraphics_v5_46\Code\Include\PSoC4_5 -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Release/Cm3Start.lst -g -D NDEBUG -Wall -ffunction-sections -ffat-lto-objects -finline-functions -O3 -c Generated_Source\PSoC5\Cm3Start.c -o .\CortexM3\ARM_GCC_541\Release\Cm3Start.o
@@ -67,12 +112,12 @@ arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I..\..\emWinGraphics_v5_46\Code\I
 arm-none-eabi-as.exe -mcpu=cortex-m3 -mthumb -I. -IGenerated_Source\PSoC5 -alh=.\CortexM3\ARM_GCC_541\Release/CyBootAsmGnu.lst -g -W -o .\CortexM3\ARM_GCC_541\Release\CyBootAsmGnu.o Generated_Source\PSoC5\CyBootAsmGnu.s
 arm-none-eabi-ar.exe -rs .\CortexM3\ARM_GCC_541\Release\GBEmulator.a .\CortexM3\ARM_GCC_541\Release\CyDmac.o .\CortexM3\ARM_GCC_541\Release\CyFlash.o .\CortexM3\ARM_GCC_541\Release\CyLib.o .\CortexM3\ARM_GCC_541\Release\cyPm.o .\CortexM3\ARM_GCC_541\Release\CySpc.o .\CortexM3\ARM_GCC_541\Release\cyutils.o .\CortexM3\ARM_GCC_541\Release\SPIM_1.o .\CortexM3\ARM_GCC_541\Release\SPIM_1_PM.o .\CortexM3\ARM_GCC_541\Release\SPIM_1_INT.o .\CortexM3\ARM_GCC_541\Release\MISO.o .\CortexM3\ARM_GCC_541\Release\MOSI.o .\CortexM3\ARM_GCC_541\Release\SCLK.o .\CortexM3\ARM_GCC_541\Release\SS.o .\CortexM3\ARM_GCC_541\Release\DC.o .\CortexM3\ARM_GCC_541\Release\RESET.o .\CortexM3\ARM_GCC_541\Release\LED.o .\CortexM3\ARM_GCC_541\Release\SPIM_1_IntClock.o .\CortexM3\ARM_GCC_541\Release\Clock_1.o .\CortexM3\ARM_GCC_541\Release\Timer_1.o .\CortexM3\ARM_GCC_541\Release\Timer_1_PM.o .\CortexM3\ARM_GCC_541\Release\Timer_1_interrupt.o .\CortexM3\ARM_GCC_541\Release\cy_em_eeprom.o .\CortexM3\ARM_GCC_541\Release\CyBootAsmGnu.o
 arm-none-eabi-ar.exe: creating .\CortexM3\ARM_GCC_541\Release\GBEmulator.a
-arm-none-eabi-gcc.exe -Wl,--start-group -o D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\CortexM3\ARM_GCC_541\Release\GBEmulator.elf .\CortexM3\ARM_GCC_541\Release\main.o .\CortexM3\ARM_GCC_541\Release\cpu.o .\CortexM3\ARM_GCC_541\Release\rom.o .\CortexM3\ARM_GCC_541\Release\memory.o .\CortexM3\ARM_GCC_541\Release\registers.o .\CortexM3\ARM_GCC_541\Release\instruction_set.o .\CortexM3\ARM_GCC_541\Release\GUI_X.o .\CortexM3\ARM_GCC_541\Release\GUIConf.o .\CortexM3\ARM_GCC_541\Release\LCDConf.o .\CortexM3\ARM_GCC_541\Release\tft.o .\CortexM3\ARM_GCC_541\Release\cyfitter_cfg.o .\CortexM3\ARM_GCC_541\Release\cymetadata.o .\CortexM3\ARM_GCC_541\Release\Cm3Start.o .\CortexM3\ARM_GCC_541\Release\GBEmulator.a "C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM3\ARM_GCC_541\Release\CyComponentLibrary.a" -mcpu=cortex-m3 -mthumb -L Generated_Source\PSoC5 -L ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC\libemWin_nosnts_cm3_gcc.a -Wl,-Map,.\CortexM3\ARM_GCC_541\Release/GBEmulator.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -finline-functions -O3 -ffat-lto-objects -Wl,--end-group
-cyelftool.exe -C D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\CortexM3\ARM_GCC_541\Release\GBEmulator.elf --flash_row_size 256 --flash_size 262144 --flash_offset 0x00000000
+arm-none-eabi-gcc.exe -Wl,--start-group -o D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\CortexM3\ARM_GCC_541\Release\GBEmulator.elf .\CortexM3\ARM_GCC_541\Release\main.o .\CortexM3\ARM_GCC_541\Release\cpu.o .\CortexM3\ARM_GCC_541\Release\rom.o .\CortexM3\ARM_GCC_541\Release\memory.o .\CortexM3\ARM_GCC_541\Release\registers.o .\CortexM3\ARM_GCC_541\Release\instruction_set.o .\CortexM3\ARM_GCC_541\Release\GUI_X.o .\CortexM3\ARM_GCC_541\Release\GUIConf.o .\CortexM3\ARM_GCC_541\Release\LCDConf.o .\CortexM3\ARM_GCC_541\Release\tft.o .\CortexM3\ARM_GCC_541\Release\gpu.o .\CortexM3\ARM_GCC_541\Release\cyfitter_cfg.o .\CortexM3\ARM_GCC_541\Release\cymetadata.o .\CortexM3\ARM_GCC_541\Release\Cm3Start.o .\CortexM3\ARM_GCC_541\Release\GBEmulator.a "C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM3\ARM_GCC_541\Release\CyComponentLibrary.a" -mcpu=cortex-m3 -mthumb -L Generated_Source\PSoC5 -L ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC ..\..\emWinGraphics_v5_46\LinkLibrary\PSoC5\GCC\libemWin_nosnts_cm3_gcc.a -Wl,-Map,.\CortexM3\ARM_GCC_541\Release/GBEmulator.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -finline-functions -O3 -ffat-lto-objects -Wl,--end-group
+cyelftool.exe -C D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\CortexM3\ARM_GCC_541\Release\GBEmulator.elf --flash_row_size 256 --flash_size 262144 --flash_offset 0x00000000
 No ELF section .cychecksum found, creating one
 Application checksum calculated and stored in ELF section .cychecksum
 Checksum calculated and stored in ELF section .cymeta
-cyelftool.exe -S D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\CortexM3\ARM_GCC_541\Release\GBEmulator.elf
-Flash used: 83872 of 262144 bytes (32.0%).
-SRAM used: 28033 of 65536 bytes (42.8%). Stack: 2048 bytes. Heap: 128 bytes.
---------------- Rebuild Succeeded: 04/13/2021 15:39:44 ---------------
+cyelftool.exe -S D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\CortexM3\ARM_GCC_541\Release\GBEmulator.elf
+Flash used: 53038 of 262144 bytes (20.2%).
+SRAM used: 42049 of 65536 bytes (64.2%). Stack: 2048 bytes. Heap: 128 bytes.
+--------------- Rebuild Succeeded: 04/28/2021 17:35:09 ---------------

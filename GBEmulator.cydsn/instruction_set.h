@@ -28,8 +28,8 @@ static inline uint8_t pop_stack_u8(Cpu* cpu){
 }
 
 static inline void push_stack(Cpu* cpu, uint16_t value){
-    push_stack_u8(cpu, value & 0xF0);  // push high
-    push_stack_u8(cpu, value & 0x0F);  // push low
+    push_stack_u8(cpu, value >> 8);  // push high
+    push_stack_u8(cpu, value & 0x00FF);  // push low
 }
 
 static inline uint16_t pop_stack(Cpu* cpu){
@@ -378,7 +378,7 @@ static inline uint8_t swap_mhl(Cpu* cpu){
 }
 static inline uint8_t rl_b(Cpu* cpu, uint8_t b){
     uint8_t old_carry = get_carry_flag(&cpu->reg);
-    set_carry_flag(&cpu->reg, (b & 0x8));
+    set_carry_flag(&cpu->reg, (b & 0x80));
     uint8_t result = (b << 1) | old_carry;
     set_zero_flag(&cpu->reg, result == 0);
     set_subtraction_flag(&cpu->reg, false);
@@ -398,13 +398,13 @@ static inline uint8_t rla(Cpu* cpu){
     set_zero_flag(&cpu->reg, false);
     set_subtraction_flag(&cpu->reg, false);
     set_half_carry_flag(&cpu->reg, false);
-    uint8_t old_carry = get_carry_flag(&cpu->reg);
-    set_carry_flag(&cpu->reg, (cpu->reg.a & 0x8));
-    cpu->reg.a = (cpu->reg.a << 1) | old_carry;
+    uint8_t old_carry = get_carry_flag(&cpu->reg) ? 1 : 0;
+    set_carry_flag(&cpu->reg, (cpu->reg.a & 0x80));
+    cpu->reg.a = (cpu->reg.a << 1) + old_carry;
     return 1;
 }
 static inline uint8_t rlc_b(Cpu* cpu, uint8_t b){
-    set_carry_flag(&cpu->reg, (b & 0x8));
+    set_carry_flag(&cpu->reg, (b & 0x80));
     uint8_t result = (b << 1) | (b >> 7);
     set_zero_flag(&cpu->reg, result == 0);
     set_subtraction_flag(&cpu->reg, false);
@@ -421,7 +421,7 @@ static inline uint8_t rlc_mhl(Cpu* cpu){
     return 4;
 }
 static inline uint8_t rlca(Cpu* cpu){
-    set_carry_flag(&cpu->reg, (cpu->reg.a & 0x8));
+    set_carry_flag(&cpu->reg, (cpu->reg.a & 0x80));
     cpu->reg.a = (cpu->reg.a << 1) | (cpu->reg.a >> 7);
     set_zero_flag(&cpu->reg, false);
     set_subtraction_flag(&cpu->reg, false);
@@ -481,7 +481,7 @@ static inline uint8_t rrca(Cpu* cpu){
     return result;
 }
 static inline uint8_t sla_b(Cpu* cpu, uint8_t b){
-    set_carry_flag(&cpu->reg, b & 0x8);
+    set_carry_flag(&cpu->reg, b & 0x80);
     uint8_t result = b << 1;
     set_zero_flag(&cpu->reg, result == 0);
     set_subtraction_flag(&cpu->reg, false);
@@ -499,7 +499,7 @@ static inline uint8_t sla_mhl(Cpu* cpu){
 }
 static inline uint8_t sra_b(Cpu* cpu, uint8_t b){
     set_carry_flag(&cpu->reg, b & 0x1);
-    uint8_t result = (b >> 1) | (b & 0x8);
+    uint8_t result = (b >> 1) | (b & 0x80);
     set_zero_flag(&cpu->reg, result == 0);
     set_subtraction_flag(&cpu->reg, false);
     set_half_carry_flag(&cpu->reg, false);
@@ -609,7 +609,8 @@ static inline uint8_t ld_a_mhld(Cpu* cpu){
 }
 static inline uint8_t call_n16(Cpu* cpu){
     // Push pc after call onto stack
-    push_stack(cpu, cpu->reg.pc);
+    // Add 2 since we have to increment for immediate
+    push_stack(cpu, cpu->reg.pc + 2);
     cpu->reg.pc = fetch_and_increment_pc_twice(cpu);
     return 6;
 }
@@ -628,6 +629,8 @@ static inline uint8_t call_cc_n16(Cpu* cpu, CC cc){
         if (!get_carry_flag(&cpu->reg)) return call_n16(cpu);
         break;
     }
+    //Increment pc to account for reads even if we didn't jump
+    cpu->reg.pc += 2;
     return 3;
 }
 static inline uint8_t jp_hl(Cpu* cpu){
@@ -653,6 +656,8 @@ static inline uint8_t jp_cc_n16(Cpu* cpu, CC cc){
         if (!get_carry_flag(&cpu->reg)) return jp_n16(cpu);
         break;
     }
+    // Add to pc even if we didn't jump
+    cpu->reg.pc += 2;
     return 3;
 }
 static inline uint8_t jr_e8(Cpu* cpu){
@@ -675,6 +680,8 @@ static inline uint8_t jr_cc_e8(Cpu* cpu, CC cc){
         if (!get_carry_flag(&cpu->reg)) return jr_e8(cpu);
         break;
     }
+    //add to pc to account for read even if we didn't jump
+    cpu->reg.pc++;
     return 2;
 }
 static inline uint8_t ret(Cpu* cpu){
@@ -732,7 +739,7 @@ static inline uint8_t ld_sp_n16(Cpu* cpu){
 static inline uint8_t ld_mn16_sp(Cpu* cpu){
     uint16_t addr = fetch_and_increment_pc_twice(cpu);
     write_mem(cpu->mem, addr, cpu->reg.sp & 0x00FF);
-    write_mem(cpu->mem, addr + 1, cpu->reg.sp & 0xFF00);
+    write_mem(cpu->mem, addr + 1, cpu->reg.sp >> 8);
     return 5;
 }
 static inline uint8_t ld_hl_sp_e8(Cpu* cpu){

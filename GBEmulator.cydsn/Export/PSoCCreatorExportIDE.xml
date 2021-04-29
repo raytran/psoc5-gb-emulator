@@ -25,7 +25,7 @@
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
   </Toolchains>
-  <Project Name="GBEmulator" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" Version="6.10" Type="Normal">
+  <Project Name="GBEmulator" Path="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" Version="6.10" Type="Normal">
     <CMSIS_SVD_File>GBEmulator.svd</CMSIS_SVD_File>
     <Datasheet />
     <LinkerFiles>
@@ -34,8 +34,8 @@
       <LinkerFile Toolchain="ARM IAR Generic">.\Generated_Source\PSoC5\Cm3Iar.icf</LinkerFile>
     </LinkerFiles>
     <Folders>
-      <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
+      <Folder BuildType="STRICT" Path="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn">
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn">
           <File BuildType="BUILD" Toolchain="">main.c</File>
           <File BuildType="BUILD" Toolchain="">cpu.c</File>
           <File BuildType="BUILD" Toolchain="">rom.c</File>
@@ -47,6 +47,7 @@
           <File BuildType="BUILD" Toolchain="">LCDConf.c</File>
           <File BuildType="BUILD" Toolchain="">tft.c</File>
           <File BuildType="BUILD" Toolchain="">gpu.c</File>
+          <File BuildType="BUILD" Toolchain="">debugfuncs.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">registers.h</File>
           <File BuildType="BUILD" Toolchain="">memory.h</File>
@@ -57,10 +58,11 @@
           <File BuildType="BUILD" Toolchain="">LCDConf.h</File>
           <File BuildType="BUILD" Toolchain="">tft.h</File>
           <File BuildType="BUILD" Toolchain="">gpu.h</File>
+          <File BuildType="BUILD" Toolchain="">debugfuncs.h</File>
         </Files>
       </Folder>
-      <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\Generated_Source\PSoC5">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
+      <Folder BuildType="STRICT" Path="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\Generated_Source\PSoC5">
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn">
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitter_cfg.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitter_cfg.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cymetadata.c</File>
@@ -145,52 +147,59 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_1_interrupt.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cy_em_eeprom.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cy_em_eeprom.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button1_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button1.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button1.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Clock_2.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Clock_2.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\button_press_1.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\button_press_1.h</File>
         </Files>
       </Folder>
-      <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\Export\ARM_GCC_Generic">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
+      <Folder BuildType="STRICT" Path="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\Export\ARM_GCC_Generic">
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn">
           <File BuildType="BUILD" Toolchain="ARM GCC Generic">.\Export\ARM_GCC_Generic\CyComponentLibrary.a</File>
         </Files>
       </Folder>
-      <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\Export\ARM_MDK_Generic">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
+      <Folder BuildType="STRICT" Path="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\Export\ARM_MDK_Generic">
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn">
           <File BuildType="BUILD" Toolchain="ARM MDK Generic">.\Export\ARM_MDK_Generic\CyComponentLibrary.a</File>
         </Files>
       </Folder>
-      <Folder BuildType="STRICT" Path="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn\Export\ARM_IAR_Generic">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn">
+      <Folder BuildType="STRICT" Path="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\Export\ARM_IAR_Generic">
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn">
           <File BuildType="BUILD" Toolchain="ARM IAR Generic">.\Export\ARM_IAR_Generic\CyComponentLibrary.a</File>
         </Files>
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\codegentemp">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\ARM_GCC_441">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\ARM_GCC_473">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\DP8051_Keil_952">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\DP8051">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM0">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM0p">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM3">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM4">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM7">
-        <Files Root="D:\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
+        <Files Root="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn" />
       </Folder>
     </Folders>
   </Project>

@@ -2,16 +2,18 @@
 #define Gpu_H
 #include "memory.h"
 #include "stdint.h"    
-#define FRAMEBUFFER_SIZE 23040  //Game Boy had a 160x144 display = 23040 total pixels
+#define DISPLAY_WIDTH 160
+#define DISPLAY_HEIGHT 144
 
 extern const uint16_t COLORS[4]; 
 typedef struct Gpu {
     Memory* mem;
-    uint8_t framebuffer[FRAMEBUFFER_SIZE];   // each item in the framebuffer is an index in COLORS
+    uint32_t mode_clock;
+    uint8_t mode;       // current mode of the CPU; 0 1 2 or 3
 } Gpu;
 
-// Updates the frame buffer by looking at VRAM
-void update_framebuffer(Gpu* gpu, Memory* mem);
-// Draws the contents of the frame buffer to the display
-void draw(Gpu* gpu);
+// processes the next tick of the GPU
+// Takes in the # of machine cycles that elapsed
+void tick_gpu(Gpu* gpu, Memory* mem, uint8_t delta_machine_cycles);
+
 #endif

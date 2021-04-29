@@ -51,16 +51,16 @@ typedef struct Registers {
 void reset_registers(Registers *regs);
 
 static inline bool get_zero_flag(Registers* regs){
-    return regs->f & 0b10000000;
+    return (regs->f & 0b10000000) != 0;
 }
 static inline bool get_subtraction_flag(Registers* regs){
-    return regs->f & 0b01000000;
+    return (regs->f & 0b01000000) != 0;
 }
 static inline bool get_half_carry_flag(Registers* regs){
-    return regs->f & 0b00100000;
+    return (regs->f & 0b00100000) != 0;
 }
 static inline bool get_carry_flag(Registers* regs){
-    return regs->f & 0b00010000;
+    return (regs->f & 0b00010000) != 0;
 }
 static inline void set_zero_flag(Registers* regs, bool value){
     regs->f = (regs->f & ~(1 << 7)) ^ (value << 7);
