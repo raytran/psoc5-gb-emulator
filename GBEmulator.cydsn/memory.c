@@ -1,17 +1,21 @@
 #include "memory.h" 
+#include <project.h>
 #include "rom.h"
 #include "cpu.h"
 #include "stdint.h"
 #include "stdbool.h"
+#include "emumode.h"
 
 void reset_memory(Memory* memory){
     int i;
     for (i=0;i<WRAM_SIZE;i++){
-        memory->wram[i] = 0;
+        memory->wram[i] = 0xFF;
     }
     for (i=0;i<VRAM_SIZE;i++){
-        memory->vram[i] = 0;
+        memory->vram[i] = 0xFF;
     }
+    //@@@TODO remove this once you add joypad
+    memory->joyp = 0xFF;
 }
 
 
@@ -33,6 +37,10 @@ void reset_memory(Memory* memory){
 //	0100-014F 	Cartridge Header Area
 //  0000-00FF 	Restart and Interrupt Vectorss
 uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
+    if (DEBUG_MODE && DEBUG_MODE_STUB_LY_0x90 && address == LY_LOC){
+        return 0x90;
+    }
+    
     if (ROM_START <= address && address < ROM_END) {
         if (inBios && address < BIOS_SIZE) {
             return bios[address];
@@ -40,8 +48,12 @@ uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
         return rom[address];
     } else if (VRAM_START <= address && address < VRAM_END) {
         return memory->vram[address - VRAM_START];
+    } else if (EXTERNAL_RAM_START <= address && address < EXTERNAL_RAM_END){
+        return memory->eram[address - EXTERNAL_RAM_START];
     } else if (WRAM_START <= address && address < WRAM_END) {
         return memory->wram[address - WRAM_START];
+    } else if (ECHO_RAM_START <= address && address < ECHO_RAM_END){
+        return memory->wram[address - ECHO_RAM_START];
     } else if (OAM_START <= address && address < OAM_END){
         return memory->oam[address - OAM_START];
     } else if (ZERO_PAGE_START <= address && address < ZERO_PAGE_END){
@@ -62,6 +74,12 @@ uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
                 return memory->scroll_y;
             case LY_LOC:
                 return memory->current_scan_line;
+            case JOYP_LOC:
+                return memory->joyp;
+            case SB_LOC:
+                return memory->sb;
+            case SC_LOC:
+                return memory->sc;
             default: break;
         }
     
@@ -72,12 +90,21 @@ uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
 
 
 void write_mem(Memory* memory, uint16_t address, uint8_t data) {
+    if (GB_SERIAL_PASSTHROUGH && address == 0xFF02 && data == 0x81) {
+        // Pass through GB serial in debug mode
+        UART_1_PutChar(fetch(memory, 0xFF01, false));
+    }   
+    
     if (ROM_START <= address && address < ROM_END) {
         // Nothing to do... can't write to ROM
     } else if (VRAM_START <= address && address < VRAM_END) {
         memory->vram[address - VRAM_START] = data;
+    } else if (EXTERNAL_RAM_START <= address && address < EXTERNAL_RAM_END){
+        memory->eram[address - EXTERNAL_RAM_START] = data;
     } else if (WRAM_START <= address && address < WRAM_END) {
         memory->wram[address - WRAM_START] = data;
+    } else if (ECHO_RAM_START <= address && address < ECHO_RAM_END){
+        memory->wram[address - ECHO_RAM_START] = data;
     } else if (OAM_START <= address && address < OAM_END){
         memory->oam[address - OAM_START] = data;
     } else if (ZERO_PAGE_START <= address && address < ZERO_PAGE_END){
@@ -101,6 +128,12 @@ void write_mem(Memory* memory, uint16_t address, uint8_t data) {
             break;
             case SCY_LOC:
             memory->scroll_y = data;
+            break;
+            case SB_LOC:
+                memory->sb = data;
+            break;
+            case SC_LOC:
+                memory->sc = data;
             break;
             default: break;
         }

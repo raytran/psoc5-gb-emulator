@@ -64,8 +64,8 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0x31: return ld_sp_n16(cpu); //LD SP,u16
         case 0x32: return ld_mhld_a(cpu); //LD (HL-),A
         case 0x33: return inc_sp(cpu); //INC SP
-        case 0x34: return inc_r16(cpu, &cpu->reg.hl); //INC (HL)
-        case 0x35: return dec_r16(cpu, &cpu->reg.hl); //DEC (HL)
+        case 0x34: return inc_mhl(cpu); //INC (HL)
+        case 0x35: return dec_mhl(cpu); //DEC (HL)
         case 0x36: return ld_mhl_n8(cpu); //LD (HL),u8
         case 0x37: return scf(cpu); //SCF
         case 0x38: return jr_cc_e8(cpu, C); //JR C,i8
@@ -211,7 +211,7 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0xc4: return call_cc_n16(cpu, NZ); //CALL NZ,u16
         case 0xc5: return push_r16(cpu, &cpu->reg.bc); //PUSH BC
         case 0xc6: return add_a_n8(cpu); //ADD A,u8
-        case 0xc7: return rst_vec(cpu, 0x00); //RST 00h
+        case 0xc7: return rst_vec(cpu, 0x0000); //RST 00h
         case 0xc8: return ret_cc(cpu, Z); //RET Z
         case 0xc9: return ret(cpu); //RET
         case 0xca: return jp_cc_n16(cpu, Z); //JP Z,u16
@@ -219,7 +219,7 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0xcc: return call_cc_n16(cpu, Z); //CALL Z,u16
         case 0xcd: return call_n16(cpu); //CALL u16
         case 0xce: return adc_a_n8(cpu); //ADC A,u8
-        case 0xcf: return rst_vec(cpu, 0x08); //RST 08h
+        case 0xcf: return rst_vec(cpu, 0x0008); //RST 08h
         case 0xd0: return ret_cc(cpu, NC); //RET NC
         case 0xd1: return pop_r16(cpu, &cpu->reg.de); //POP DE
         case 0xd2: return jp_cc_n16(cpu, NC); //JP NC,u16
@@ -227,7 +227,7 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0xd4: return call_cc_n16(cpu, NC); //CALL NC,u16
         case 0xd5: return push_r16(cpu, &cpu->reg.de); //PUSH DE
         case 0xd6: return sub_a_n8(cpu); //SUB A,u8
-        case 0xd7: return rst_vec(cpu, 0x10); //RST 10h
+        case 0xd7: return rst_vec(cpu, 0x0010); //RST 10h
         case 0xd8: return ret_cc(cpu, C); //RET C
         case 0xd9: return reti(cpu); //RETI
         case 0xda: return jp_cc_n16(cpu, C); //JP C,u16
@@ -235,7 +235,7 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0xdc: return call_cc_n16(cpu, C); //CALL C,u16
         case 0xdd:  //UNUSED
         case 0xde: return sbc_a_n8(cpu); //SBC A,u8
-        case 0xdf: return rst_vec(cpu, 0x18); //RST 18h
+        case 0xdf: return rst_vec(cpu, 0x0018); //RST 18h
         case 0xe0: return ldh_mn16_a(cpu); //LD (FF00+u8),A
         case 0xe1: return pop_r16(cpu, &cpu->reg.hl); //POP HL
         case 0xe2: return ldh_mc_a(cpu); //LD (FF00+C),A
@@ -243,7 +243,7 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0xe4:  //UNUSED
         case 0xe5: return push_r16(cpu, &cpu->reg.hl); //PUSH HL
         case 0xe6: return and_a_n8(cpu); //AND A,u8
-        case 0xe7: return rst_vec(cpu, 0x20); //RST 20h
+        case 0xe7: return rst_vec(cpu, 0x0020); //RST 20h
         case 0xe8: return add_sp_e8(cpu); //ADD SP,i8
         case 0xe9: return jp_hl(cpu); //JP HL
         case 0xea: return ld_mn16_a(cpu); //LD (u16),A
@@ -251,15 +251,15 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0xec:  //UNUSED
         case 0xed:  //UNUSED
         case 0xee: return xor_a_n8(cpu); //XOR A,u8
-        case 0xef: return rst_vec(cpu, 0x28); //RST 28h
+        case 0xef: return rst_vec(cpu, 0x0028); //RST 28h
         case 0xf0: return ldh_a_mn16(cpu); //LD A,(FF00+u8)
-        case 0xf1: return pop_r16(cpu, &cpu->reg.af); //POP AF
+        case 0xf1: return pop_af(cpu); //POP AF
         case 0xf2: return ldh_a_mc(cpu); //LD A,(FF00+C)
         case 0xf3: return di(cpu); //DI
         case 0xf4:  //UNUSED
         case 0xf5: return push_r16(cpu, &cpu->reg.af); //PUSH AF
         case 0xf6: return or_a_n8(cpu); //OR A,u8
-        case 0xf7: return rst_vec(cpu, 0x30); //RST 30h
+        case 0xf7: return rst_vec(cpu, 0x0030); //RST 30h
         case 0xf8: return ld_hl_sp_e8(cpu); //LD HL,SP+i8
         case 0xf9: return ld_sp_hl(cpu); //LD SP,HL
         case 0xfa: return ld_a_mn16(cpu); //LD A,(u16)
@@ -267,7 +267,7 @@ static inline int execute_normal(Cpu* cpu, uint8_t instruction){
         case 0xfc:  //UNUSED
         case 0xfd:  //UNUSED
         case 0xfe: return cp_a_n8(cpu); //CP A,u8
-        case 0xff: return rst_vec(cpu, 0x38); //RST 
+        case 0xff: return rst_vec(cpu, 0x0038); //RST 
     }
     return 0;
 }
@@ -535,6 +535,13 @@ static inline int execute_cb_prefix(Cpu* cpu, uint8_t instruction){
 }
 
 int tick(Cpu* cpu){
+    // Handle EI calls (the effects are delayed by 1 instr)
+    if (cpu->reg.ime_enable_req){
+        cpu->reg.ime = true;
+        cpu->reg.ime_enable_req = false;
+    }
+    
+    uint8_t cycles_taken;
     // Fetch
     uint8_t instruction = fetch_and_increment_pc(cpu);
 
@@ -543,11 +550,45 @@ int tick(Cpu* cpu){
         // This is a CB-prefixed instruction! 
         // Have to read the next one
         uint8_t cb_instr = fetch_and_increment_pc(cpu);
-        return execute_cb_prefix(cpu, cb_instr);
+        cycles_taken = execute_cb_prefix(cpu, cb_instr);
     } else {
         // Regular instruction
-        return execute_normal(cpu, instruction);
+        cycles_taken = execute_normal(cpu, instruction);
     }
+    
+    // Interrupt handling
+    //Bit 0: VBlank   Interrupt (INT 40h) 
+    //Bit 1: LCD STAT Interrupt (INT 48h) 
+    //Bit 2: Timer    Interrupt (INT 50h)  
+    //Bit 3: Serial   Interrupt (INT 58h)  
+    //Bit 4: Joypad   Interrupt (INT 60h)  
+    int interrupt_enable = cpu->mem->interrupt_enable;
+    int interrupt_flag = cpu->mem->interrupt_flag;
+    int active_interrupts = interrupt_enable & interrupt_flag;
+    if (cpu->reg.ime && active_interrupts){
+        // disable interrupts (until a reti can re-enable)
+        cpu->reg.ime = false;
+        cycles_taken += 5;   // takes an additional 5 cycles to service interrupt
+        // service the interrupt
+        if (active_interrupts & VBLANK_INTERRUPT_REG_MASK) {
+            rst_vec(cpu, VBLANK_ISR_LOC);
+            cpu->mem->interrupt_flag &= ~VBLANK_INTERRUPT_REG_MASK;
+        } else if (active_interrupts & LCD_STAT_INTERRUPT_REG_MASK) {
+            rst_vec(cpu, LCD_STAT_ISR_LOC);
+            cpu->mem->interrupt_flag &= ~LCD_STAT_INTERRUPT_REG_MASK;
+        } else if (active_interrupts & TIMER_INTERRUPT_REG_MASK) {
+            rst_vec(cpu, TIMER_ISR_LOC);
+            cpu->mem->interrupt_flag &= ~TIMER_INTERRUPT_REG_MASK;
+        } else if (active_interrupts & SERIAL_INTERRUPT_REG_MASK) {
+            rst_vec(cpu, SERIAL_ISR_LOC);
+            cpu->mem->interrupt_flag &= ~SERIAL_INTERRUPT_REG_MASK;
+        } else if (active_interrupts & JOYPAD_INTERRUPT_REG_MASK) {
+            rst_vec(cpu, JOYPAD_ISR_LOC);
+            cpu->mem->interrupt_flag &= ~JOYPAD_INTERRUPT_REG_MASK;
+        }
+    }
+    
+    return cycles_taken;
 }
 
 

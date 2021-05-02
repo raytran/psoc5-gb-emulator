@@ -27,7 +27,7 @@ Gpu gpu;
 Memory mem;
 unsigned long total_cycles = 0;
 unsigned long total_instrs = 0;
-char buffer[100];
+char buffer[500];
 
 double seconds = 0;
 
@@ -47,32 +47,57 @@ CY_ISR(Timer_1_Handler){
     */
 }
 
-
+bool debug_trace_through_serial_on = false;
+void tick_all(){
+    if (DEBUG_MODE && DEBUG_TRACE_THROUGH_SERIAL){
+        if (debug_trace_through_serial_on || cpu.reg.pc >= DEBUG_TRACE_THROUGH_SERIAL_BREAKPOINT){
+            debug_trace_through_serial_on = true;
+            debug_fmt_cpu_trace(buffer, &cpu, &mem, total_instrs, total_cycles);
+            UART_1_PutString(buffer);
+        }
+    }
+    int cycles_taken = tick(&cpu);
+    if (cpu.inBios){
+        cpu.inBios = (fetch(&mem, 0xFF50, cpu.inBios) == 0);
+    }
+    tick_gpu(&gpu, cycles_taken);
+    total_cycles += cycles_taken;
+    total_instrs++;
+}
 CY_ISR(button_press_1_handler){
     if (DEBUG_MODE){
-        int cycles_taken = tick(&cpu);
-        tick_gpu(&gpu, cycles_taken);
-        total_cycles += cycles_taken;
-        total_instrs++;
-        debug_fmt_cpu_state(buffer, &cpu, &mem, total_instrs, total_cycles, DEBUG_MEMORY_DISPLAY_LOC);
-      //  debug_show_full_vram(&mem);
-        GUI_DispStringAt(buffer, 0, 0);
+        if (DEBUG_SHOW_VRAM_ON_BUTTON){
+            debug_show_full_vram(&mem);
+        } else {
+            tick_all(); 
+            debug_fmt_cpu_state(buffer, &cpu, &mem, total_instrs, total_cycles, DEBUG_MEMORY_DISPLAY_LOC);
+            GUI_DispStringAt(buffer, 0, 0);
+        }
     }
 }
+
 
 int main()
 {
     CyGlobalIntEnable; /* Enable global interrupts. */
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-    
+
+                
+        
     button_press_1_StartEx(button_press_1_handler);
     
     SPIM_1_Start(); 
+    SPIM_1_ClearFIFO();
+    UART_1_Start();
+    CyDelay(500);
+    UART_1_PutString("Hello from the PSOC GB Emulator\r\n");
     if (DEBUG_MODE){
         // Only use emWin to print text in debug mode
         GUI_Init();
         GUI_Clear();
         GUI_SetFont(&GUI_Font8x16);
+        
+      
         /*
         // Setup timer interrupt for performance timing
         Timer_1_interrupt_StartEx(Timer_1_Handler);
@@ -94,17 +119,16 @@ int main()
         write8_a1(SP & 0x00FF);
         write8_a1(EP >> 8);                 // set EP[15:0]
         write8_a1(EP & 0x00FF);
-        
-        
+
     }
     
 
-    
+    setup_gpu(&gpu, &mem);
     cpu.mem = &mem;
-    gpu.mem = &mem;
+
     reset_cpu(&cpu);
     reset_memory(&mem);
-    cpu.inBios = true;
+    cpu.inBios = START_IN_BIOS;
     
 
     if (DEBUG_MODE){
@@ -114,21 +138,15 @@ int main()
                 GUI_DispStringAt(buffer, 0, 0);
                 break;
             }
-            int cycles_taken = tick(&cpu); 
-            tick_gpu(&gpu, cycles_taken);
-            total_cycles += cycles_taken;
-            total_instrs++;
+            tick_all();
         }
     } else {
+        
         for(;;)
         {
-           
-            int cycles_taken = tick(&cpu);
-            tick_gpu(&gpu, cycles_taken);
-            total_cycles += cycles_taken;
-            total_instrs++;
+            tick_all();
         }
-    
+       
     }
 
 

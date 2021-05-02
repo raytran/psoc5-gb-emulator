@@ -8,4 +8,6 @@ void debug_show_full_vram(Memory* mem);
 // Formats the state of the CPU into a string returnBuffer
 // Also shows 16 bytes starting at memoffset
 void debug_fmt_cpu_state(char* returnBuffer, Cpu* cpu, Memory* mem, unsigned long total_instrs, unsigned long total_cycles, uint16_t memoffset);
+// Same as above, but only in one line 
+void debug_fmt_cpu_trace(char* returnBuffer, Cpu* cpu, Memory* mem, unsigned long total_instrs, unsigned long total_cycles);
 #endif

@@ -11,6 +11,8 @@ typedef struct Gpu {
     uint32_t mode_clock;
     uint8_t mode;       // current mode of the CPU; 0 1 2 or 3
 } Gpu;
+// Initializes GPU
+void setup_gpu(Gpu* gpu, Memory* mem);
 
 // processes the next tick of the GPU
 // Takes in the # of machine cycles that elapsed

@@ -13,6 +13,19 @@ const uint16_t COLORS[4]  = {0xF800, 0xF80F, 0x00DD, 0xFFEE};
 #define ONE_LINE_TIME_MACHINE_CYCLES 114
 #define VBLANK_TIME_MACHINE_CYCLES 1140   //4560 clock cycles => 1140 m cycles
 
+
+#define LINE_SPI_DMA_BUFFER_SIZE 320    // Each pixel is 2 bytes => 160 * 2 = 320
+uint8_t line_spi_dma_buffer[LINE_SPI_DMA_BUFFER_SIZE];
+
+void setup_gpu(Gpu* gpu, Memory* mem){
+    if (!DEBUG_MODE){
+        // Initialize DMA here
+        setupDma(&line_spi_dma_buffer[0], LINE_SPI_DMA_BUFFER_SIZE);
+    }
+    gpu->mem = mem;
+}
+
+
 //Called at the end of every PIXEL_TRANSFER_MODE
 // Renders the current line
 void renderLine(Memory* mem){
@@ -22,21 +35,27 @@ void renderLine(Memory* mem){
     // We can access this as either          vram[0x1800:] or vram[0x1C00:]
     int mapOffset = 0x1800;
     
-    
     int y = mem->current_scan_line + mem->scroll_y;
-    
+   
     // Each "y" is worth 8 pixels, so divide by 8 to get num tiles
     // Then multiply by 32 since we have 32 tiles per row
-    int mapRowStart = mapOffset + (y/8) * 32; 
+    
+    int mapRowStart = mapOffset + ((y/8) % 32) * 32;
     
     
     int tileLine = y % 8; //y % 8 gives us the specific line in the tile to show
     
     //write8_a0(0x2C);                    // send Memory Write command
+    
+    // wait until we can modify the line buffer
+    while (!isDmaReady()){};
+    
+    
     int i;
+    int x = 0;
     for (i=0;i<DISPLAY_WIDTH/8;i++){    //DISPLAY_WIDTH/8 = 20 total tiles on the line
         // Which tile are we on?
-        uint8_t tileId = mem->vram[mapRowStart + i];
+        uint8_t tileId = mem->vram[mapRowStart + (i + mem->scroll_x) % (DISPLAY_WIDTH/8)];
         
         int tileStartAddr = tileId * 16; //each tile is 16 bytes
         // finally index at the correct 2 bytes for this row
@@ -53,31 +72,27 @@ void renderLine(Memory* mem){
             
             switch (pxcolor){
                 case 0:
-                    write8_a1(0xFF);
-                    write8_a1(0xFF);
+                    line_spi_dma_buffer[2 * x] = 0xFF;
+                    line_spi_dma_buffer[2 * x + 1] = 0xFF;
                 break;
                 case 1:
-                    write8_a1(0xC6);
-                    write8_a1(0x18);
+                    line_spi_dma_buffer[2 * x] = 0xC6;
+                    line_spi_dma_buffer[2 * x + 1] = 0x18;
                 break;
                 case 2:
-                    write8_a1(0x7B);
-                    write8_a1(0xEF);
+                    line_spi_dma_buffer[2 * x] = 0x7B;
+                    line_spi_dma_buffer[2 * x + 1] = 0xEF;
                 break;
                 case 3:
-                    write8_a1(0x00);
-                    write8_a1(0x00);
+                    line_spi_dma_buffer[2 * x] = 0x00;
+                    line_spi_dma_buffer[2 * x + 1] = 0x00;
                 break;
             }
-            
+            x++;   
         }
-        
-        
-        
-        
     }
-    
-    //write8_a0(0x00);                    // send NOP command to end writing process
+    // Finally send the line buffer over SPI
+    startDmaTransfer();
 }
 
 
@@ -130,6 +145,8 @@ void tick_gpu(Gpu* gpu, uint8_t delta_machine_cycles){
                 
                 // change to vblank
                 gpu->mode = VBLANK_MODE;
+                // request interrupt
+                mem->interrupt_flag |= VBLANK_INTERRUPT_REG_MASK;
             }else{
                 gpu->mode = OAM_MODE;
             }
@@ -147,17 +164,13 @@ void tick_gpu(Gpu* gpu, uint8_t delta_machine_cycles){
                 mem->current_scan_line = 0;
                 
                 if (!DEBUG_MODE){
+                    while (!isDmaReady()){};            // wait for DMA stuff to finish
                     write8_a0(0x00);                    // send NOP command to end the last writing process
                     write8_a0(0x2C);                    // send Memory Write command to start a new one
+                    setDChigh();                        // set DC line high to start sending data instead of cmds
                 }
             }
         }
         break;
     }
-    
-    
-    
-    
-    
-   
 }

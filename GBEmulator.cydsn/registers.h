@@ -45,6 +45,7 @@ typedef struct Registers {
     uint16_t pc;    // program counter
     uint16_t sp;    // stack pointer
     bool ime;       // interrupt enable
+    bool ime_enable_req;  //used to delay ei by 1 instr
 } Registers;
 
 // Reset all registers to 0

@@ -39,10 +39,10 @@ static inline uint16_t pop_stack(Cpu* cpu){
 }
 
 static inline bool carry_on_subtraction_u8(uint8_t first_num, uint8_t second_num){
-    return first_num > second_num;
+    return second_num > first_num;
 }
 static inline bool carry_on_subtraction_u16(uint16_t first_num, uint16_t second_num){
-    return first_num > second_num;
+    return second_num > first_num;
 }
 static inline bool carry_on_addition_u8(uint8_t first_num, uint8_t second_num){
     return (int) first_num + (int) second_num > 0xFF;
@@ -59,7 +59,8 @@ static inline bool half_carry_addition_u8(uint8_t first_num, uint8_t second_num)
 
 static inline bool half_carry_addition_u16(uint16_t first_num, uint16_t second_num)
 {
-    return (((first_num & 0x00FF) + (second_num & 0x00FF)) & 0x0100) == 0x0100;
+    return (((first_num & 0x0F00) + (second_num & 0x0F00)) & 0x1000) == 0x1000;
+  
 }
 
 static inline bool half_carry_subtration_u8(uint8_t first_num, uint8_t second_num)
@@ -87,15 +88,11 @@ static inline void add_to_pc(Cpu* cpu, int8_t offset){
 static inline void add_to_sp(Cpu* cpu, int8_t offset){
     set_zero_flag(&cpu->reg, false);
     set_subtraction_flag(&cpu->reg, false);
-    if (offset < 0){
-        set_half_carry_flag(&cpu->reg, half_carry_subtration_u16(cpu->reg.sp, -offset));
-        set_carry_flag(&cpu->reg, carry_on_subtraction_u16(cpu->reg.sp, -offset));
-        cpu->reg.sp -= -offset;
-    }else{
-        set_half_carry_flag(&cpu->reg, half_carry_addition_u16(cpu->reg.sp, offset));
-        set_carry_flag(&cpu->reg, carry_on_addition_u16(cpu->reg.sp, offset));
-        cpu->reg.sp += offset;
-    }
+    uint16_t reg = cpu->reg.sp;
+    int result = cpu->reg.sp + offset;
+	cpu->reg.sp = result & 0xffff;
+    set_half_carry_flag(&cpu->reg, ((reg ^ offset ^ (result & 0xFFFF)) & 0x10) == 0x10);
+    set_carry_flag(&cpu->reg, ((reg ^ offset ^ (result & 0xFFFF)) & 0x100) == 0x100);
 }
 
 static inline uint8_t fetch_and_increment_pc(Cpu* cpu){
@@ -112,11 +109,11 @@ static inline uint16_t fetch_and_increment_pc_twice(Cpu* cpu){
 
 
 static inline void adc_a_b(Cpu* cpu, uint8_t b){
+    int init_carry = get_carry_flag(&cpu->reg);
     set_subtraction_flag(&cpu->reg, false);
-    uint8_t second_num = b + get_carry_flag(&cpu->reg);
-    set_half_carry_flag(&cpu->reg, half_carry_addition_u8(cpu->reg.a, second_num));
-    set_carry_flag(&cpu->reg, carry_on_addition_u8(cpu->reg.a, second_num));
-    cpu->reg.a += second_num;
+    set_half_carry_flag(&cpu->reg, ((cpu->reg.a & 0XF)+ (b & 0XF) + get_carry_flag(&cpu->reg)) > 0XF);
+    set_carry_flag(&cpu->reg, (cpu->reg.a + b + get_carry_flag(&cpu->reg)) > 0xFF);
+    cpu->reg.a += b + init_carry;
     set_zero_flag(&cpu->reg, cpu->reg.a == 0);
 }
 
@@ -149,7 +146,7 @@ static inline uint8_t add_a_mhl(Cpu* cpu){
     return 2;
 }
 static inline uint8_t add_a_n8(Cpu* cpu){
-    adc_a_b(cpu, fetch_and_increment_pc(cpu));
+    add_a_b(cpu, fetch_and_increment_pc(cpu));
     return 2;
 }
 static inline void and_a_b(Cpu* cpu, uint8_t b){
@@ -172,9 +169,9 @@ static inline uint8_t and_a_n8(Cpu* cpu){
     return 2;
 }
 static inline void cp_a_b(Cpu* cpu, uint8_t b){
-    set_zero_flag(&cpu->reg, cpu->reg.a - b == 0);
+    set_zero_flag(&cpu->reg, cpu->reg.a == b);
     set_subtraction_flag(&cpu->reg, true);
-    set_half_carry_flag(&cpu->reg, half_carry_subtration_u8(cpu->reg.a, b));
+    set_half_carry_flag(&cpu->reg, (b & 0x0f) > (cpu->reg.a & 0x0f));  
     set_carry_flag(&cpu->reg, b > cpu->reg.a);
 }
 static inline uint8_t cp_a_r8(Cpu* cpu, uint8_t* reg){
@@ -190,11 +187,10 @@ static inline uint8_t cp_a_n8(Cpu* cpu){
     return 2;
 }
 static inline uint8_t dec_u8(Cpu* cpu, uint8_t num){
-    bool bit_4_set = num & 0b00001000;
+    set_half_carry_flag(&cpu->reg, (num & 0x0F) == 0x00);
     num -= 1;
     set_zero_flag(&cpu->reg, num == 0);
     set_subtraction_flag(&cpu->reg, true);
-    set_half_carry_flag(&cpu->reg, bit_4_set && !(num & 0b00001000));
     return num;
 }
 static inline uint8_t dec_r8(Cpu* cpu, uint8_t* reg){
@@ -207,11 +203,10 @@ static inline uint8_t dec_mhl(Cpu* cpu){
     return 3;
 }
 static inline uint8_t inc_u8(Cpu* cpu, uint8_t num){
-    bool bit_3_set = num & 0b00000100;
+    set_half_carry_flag(&cpu->reg, (num & 0x0F) == 0xF);
     num += 1;
     set_zero_flag(&cpu->reg, num == 0);
     set_subtraction_flag(&cpu->reg, false);
-    set_half_carry_flag(&cpu->reg, bit_3_set && !(num & 0b00000100));
     return num;
 }
 static inline uint8_t inc_r8(Cpu* cpu, uint8_t* reg){
@@ -243,11 +238,11 @@ static inline uint8_t or_a_n8(Cpu* cpu){
     return 2;
 }
 static inline void sbc_a_b(Cpu* cpu, uint8_t b){
+    int init_carry = get_carry_flag(&cpu->reg);
     set_subtraction_flag(&cpu->reg, true);
-    uint8_t second_num = b + get_carry_flag(&cpu->reg);
-    set_half_carry_flag(&cpu->reg, half_carry_subtration_u8(cpu->reg.a, second_num));
-    set_carry_flag(&cpu->reg, carry_on_subtraction_u8(cpu->reg.a, second_num));
-    cpu->reg.a -= second_num;
+    set_half_carry_flag(&cpu->reg, (b & 0x0f) + init_carry > (cpu->reg.a & 0x0f));
+    set_carry_flag(&cpu->reg, (b + init_carry) > cpu->reg.a);
+    cpu->reg.a -= b + init_carry;
     set_zero_flag(&cpu->reg, cpu->reg.a == 0);
 }
 static inline uint8_t sbc_a_r8(Cpu* cpu, uint8_t* reg){
@@ -302,10 +297,13 @@ static inline uint8_t xor_a_n8(Cpu* cpu){
 }
 
 static inline void add_hl_b(Cpu* cpu, uint16_t b){
+    uint16_t reg = cpu->reg.hl;
+    int result = reg + b;
+
     set_subtraction_flag(&cpu->reg, false);
-    set_half_carry_flag(&cpu->reg, half_carry_addition_u16(cpu->reg.hl, b));
-    set_carry_flag(&cpu->reg, carry_on_addition_u16(cpu->reg.hl, b));
-    cpu->reg.hl += b;
+    set_half_carry_flag(&cpu->reg, (reg & 0xfff) + (b & 0xfff) > 0xfff);
+    set_carry_flag(&cpu->reg, (result & 0x10000) != 0);
+    cpu->reg.hl = (uint16_t) result;	
 }
 static inline uint8_t add_hl_r16(Cpu* cpu, uint16_t* reg){
     add_hl_b(cpu, *reg);
@@ -363,7 +361,9 @@ static inline uint8_t swap_nibbles(Cpu* cpu, uint8_t val){
     set_subtraction_flag(&cpu->reg, false);
     set_half_carry_flag(&cpu->reg, false);
     set_carry_flag(&cpu->reg, false);
-    uint8_t result = ((val << 4) | (val >> 4));
+    
+    uint8_t result = ((val & 0xf) << 4) | ((val & 0xf0) >> 4);
+	
     set_zero_flag(&cpu->reg, result == 0);
     return result;
 }
@@ -473,12 +473,17 @@ static inline uint8_t rrc_mhl(Cpu* cpu){
     return 4;
 }
 static inline uint8_t rrca(Cpu* cpu){
-    set_carry_flag(&cpu->reg, (cpu->reg.a & 0x1));
-    uint8_t result = (cpu->reg.a >> 1) | (cpu->reg.a << 7);
+    unsigned char carry = cpu->reg.a & 0x01;
+    set_carry_flag(&cpu->reg, carry != 0);
+
+	cpu->reg.a >>= 1;
+	if(carry) cpu->reg.a |= 0x80;
+	
+    set_half_carry_flag(&cpu->reg, false);
     set_zero_flag(&cpu->reg, false);
     set_subtraction_flag(&cpu->reg, false);
-    set_half_carry_flag(&cpu->reg, false);
-    return result;
+    
+    return 1;
 }
 static inline uint8_t sla_b(Cpu* cpu, uint8_t b){
     set_carry_flag(&cpu->reg, b & 0x80);
@@ -710,7 +715,7 @@ static inline uint8_t reti(Cpu* cpu){
     cpu->reg.ime = true;
     return ret(cpu);
 }
-static inline uint8_t rst_vec(Cpu* cpu, uint8_t vec){
+static inline uint8_t rst_vec(Cpu* cpu, uint16_t vec){
     push_stack(cpu, cpu->reg.pc);
     cpu->reg.pc = vec;
     return 4;
@@ -755,18 +760,15 @@ static inline uint8_t ld_sp_hl(Cpu* cpu){
     return 2;
 }
 static inline uint8_t pop_af(Cpu* cpu){
-    uint16_t popped = pop_stack(cpu);
-    set_zero_flag(&cpu->reg, (popped >> 7) & 1);
-    set_subtraction_flag(&cpu->reg, (popped >> 6) & 1);
-    set_half_carry_flag(&cpu->reg, (popped >> 5) & 1);
-    set_carry_flag(&cpu->reg, (popped >> 4) & 1);
-    cpu->reg.af = popped;
+    cpu->reg.af = pop_stack(cpu);
+    cpu->reg.f &= ~(0b1111);
     return 3;
 }
 static inline uint8_t pop_r16(Cpu* cpu, uint16_t* reg){
     *reg = pop_stack(cpu);
     return 3;
 }
+
 static inline uint8_t push_af(Cpu* cpu){
     push_stack(cpu, cpu->reg.af);
     return 4;
@@ -788,16 +790,41 @@ static inline uint8_t cpl(Cpu* cpu){
     return 1;
 }
 static inline uint8_t daa(Cpu* cpu){
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    //TODO
-    return 0;
+    uint8_t reg = cpu->reg.a;
+    bool init_carry = get_carry_flag(&cpu->reg);
+    bool init_h = get_half_carry_flag(&cpu->reg);
+    bool init_sub = get_subtraction_flag(&cpu->reg);
+    uint16_t correction = init_carry ? 0x60 : 0x00;
+
+    if (init_h || (!init_sub && ((reg & 0x0F) > 9))) {
+        correction |= 0x06;
+    }
+
+    if (init_carry || (!init_sub && (reg > 0x99))) {
+        correction |= 0x60;
+    }
+
+    if (init_sub) {
+        reg = (uint8_t) (reg - correction);
+    } else {
+        reg = (uint8_t) (reg + correction);
+    }
+
+    if (((correction << 2) & 0x100) != 0) {
+        set_carry_flag(&cpu->reg, true);
+    }
+
+    set_half_carry_flag(&cpu->reg, false);
+    set_zero_flag(&cpu->reg, reg == 0);
+    cpu->reg.a = reg;
+    return 1;
 }
 static inline uint8_t di(Cpu* cpu){
     cpu->reg.ime = false;
     return 1;
 }
 static inline uint8_t ei(Cpu* cpu){
-    cpu->reg.ime = true;
+    cpu->reg.ime_enable_req = true;
     return 1;
 }
 static inline uint8_t halt(Cpu* cpu){

@@ -10,7 +10,12 @@
  * ========================================
 */
 #include "tft.h"
-
+void setDClow(void){
+    DC_Write(0x00);
+}
+void setDChigh(void){
+    DC_Write(0x01);
+}
 //==============================================================
 // write8_a0()
 // writes an 8-bit value to the TFT with the D/C line low
@@ -99,5 +104,58 @@ void tftStart(void)
 }
 
 
+void setupDma(uint8_t* dma_buff, uint32_t burstLength){
+     /* Disable the TX interrupt of SPIM */
+    SPIM_1_TX_STATUS_MASK_REG&=(~SPIM_1_INT_ON_TX_EMPTY);
+       
+    /* Take a copy of SPIM_TX_STATUS_MASK_REG which will be used to disable the TX interrupt using DMA */
+    InterruptControl=SPIM_1_TX_STATUS_MASK_REG;
+    
+   //Init DMA, 1 byte bursts, each burst requires a request
+    txChannel = DMA_1_DmaInitialize(DMA_TX_BYTES_PER_BURST, DMA_TX_REQUEST_PER_BURST, HI16(((uint32)&dma_buff[0])), HI16(((uint32)SPIM_1_TXDATA_PTR)));
+   
+    //Allocate TD to transfer x bytes
+    txTD = CyDmaTdAllocate();
+   
+    //Allocate TD to disable the SPI Master TX interrupt
+    InterruptControlTD = CyDmaTdAllocate();
+   
+    // txTD = From the memory to the SPIM 
+    CyDmaTdSetAddress(txTD, LO16(((uint32)&dma_buff[0])), LO16(((uint32) SPIM_1_TXDATA_PTR)));
+   
+    // Set the source address as variable 'InterruptControl' which stores the value 0 to disable the SPI_INT_ON_TX_EMPTY
+	// and the destination is Control_Reg_SPIM_ctrl_reg__CONTROL_REG 
+    CyDmaTdSetAddress(InterruptControlTD, LO16((uint32)&InterruptControl), LO16((uint32)&SPIM_1_TX_STATUS_MASK_REG));
+   
+    // Set TD_tx transfer count as "burstLength" to transfer the data packet
+    // Next Td as InterruptControlTD, and auto increment source address after each transaction 
+    CyDmaTdSetConfiguration(txTD,burstLength,InterruptControlTD, TD_INC_SRC_ADR );
+   
+    // Set InterruptControlTD with transfer count 1, next TD as txTD
+    // Also enable the Terminal Output . This can be used to monitor whether transfer is complete 
+	CyDmaTdSetConfiguration(InterruptControlTD,1,txTD, 0 );
+   
+    // Terminate the chain of TDs; this clears any pending request to the DMA
+    CyDmaChSetRequest(txChannel, CPU_TERM_CHAIN);
+    CyDmaChEnable(txChannel,1);
+   
+    // Set TD_tx as the initial TD associated with channel_tx 
+    CyDmaChSetInitialTd(txChannel, txTD); 
+   
+    // Enable the DMA channel - channel_tx 
+    CyDmaChEnable(txChannel,1);
+}
+
+void startDmaTransfer(void){
+    SPIM_1_TX_STATUS_MASK_REG|=(SPIM_1_INT_ON_TX_EMPTY); 
+}
+
+
+bool isDmaReady(void){
+    return (SPIM_1_TX_STATUS_MASK_REG & SPIM_1_INT_ON_TX_EMPTY) == 0;
+}
+
 /* [] END OF FILE */
+
+
 
