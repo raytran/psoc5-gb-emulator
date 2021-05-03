@@ -74,12 +74,26 @@ uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
                 return memory->scroll_y;
             case LY_LOC:
                 return memory->current_scan_line;
+            case LYC_LOC:
+                return memory->lyc;
             case JOYP_LOC:
                 return memory->joyp;
             case SB_LOC:
                 return memory->sb;
             case SC_LOC:
                 return memory->sc;
+            case BG_PALETTE_LOC:
+                return memory->background_palette;
+            case OBP0_LOC:
+                return memory->obp0;
+            case OBP1_LOC:
+                return memory->obp1;
+            case WX_LOC:
+                return memory->wx;
+            break;
+            case WY_LOC:
+                return memory->wy;
+            break;
             default: break;
         }
     
@@ -120,6 +134,9 @@ void write_mem(Memory* memory, uint16_t address, uint8_t data) {
             case LCDC_LOC:
             memory->lcdc = data;
             break;
+            case LYC_LOC:
+            memory->lyc = data;
+            break;
             case LCD_STATUS_LOC:
             memory->lcdstatus = data;
             break;
@@ -130,10 +147,25 @@ void write_mem(Memory* memory, uint16_t address, uint8_t data) {
             memory->scroll_y = data;
             break;
             case SB_LOC:
-                memory->sb = data;
+            memory->sb = data;
             break;
             case SC_LOC:
-                memory->sc = data;
+            memory->sc = data;
+            break;
+            case BG_PALETTE_LOC:
+            memory->background_palette = data;
+            break;
+            case OBP0_LOC:
+            memory->obp0 = data;
+            break;
+            case OBP1_LOC:
+            memory->obp1 = data;
+            break;
+            case WX_LOC:
+            memory->wx = data;
+            break;
+            case WY_LOC:
+            memory->wy = data;
             break;
             default: break;
         }

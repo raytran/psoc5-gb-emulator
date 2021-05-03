@@ -22,14 +22,24 @@
 #define ZERO_PAGE_START 0xFF80
 #define ZERO_PAGE_END 0xFFFF
 #define ZERO_PAGE_SIZE 0x7F
-    
+#define SPRITES_TILE_TABLE_OFFSET 0x8000
 #define INTERRUPT_ENABLE_LOC 0xFFFF
 #define INTERRUPT_FLAG_LOC 0xFF0F
-#define VBLANK_INTERRUPT_REG_MASK   0b00001
-#define LCD_STAT_INTERRUPT_REG_MASK 0b00010
-#define TIMER_INTERRUPT_REG_MASK    0b00100
-#define SERIAL_INTERRUPT_REG_MASK   0b01000
-#define JOYPAD_INTERRUPT_REG_MASK   0b10000
+// Interrupt register mask on INTERRUPT_ENABLE
+#define INTERRUPT_ENABLE_VBLANK_MASK   0b00001
+#define INTERRUPT_ENABLE_STAT_MASK 0b00010
+#define INTERRUPT_ENABLE_TIMER_MASK    0b00100
+#define INTERRUPT_ENABLE_SERIAL_MASK   0b01000
+#define INTERRUPT_ENABLE_JOYPAD_MASK   0b10000
+// LCD status mask on lcd_stat
+#define LCD_STAT_LY_LYC_INTERRUPT_REG_MASK 0b1000000
+#define LCD_STAT_OAM_INTERRUPT_REG_MASK    0b0100000
+#define LCD_STAT_INTERRUPT_ENABLE_VBLANK_MASK 0b0010000
+#define LCD_STAT_HBLANK_INTERRUPT_REG_MASK 0b0001000
+#define LCD_STAT_LY_LYC_EQ_REG_MASK        0b0000100
+    
+
+    
 #define VBLANK_ISR_LOC 0x40
 #define LCD_STAT_ISR_LOC 0x48
 #define TIMER_ISR_LOC 0x50
@@ -37,13 +47,19 @@
 #define JOYPAD_ISR_LOC 0x60
 #define LCDC_LOC 0xFF40
 #define LCD_STATUS_LOC 0xFF41
-#define SCY_LOC 0xFF42
-#define SCX_LOC 0xFF43
-#define LY_LOC 0xFF44
-#define JOYP_LOC 0xFF00
-#define BG_PALETTE_LOC 0xFF47
-#define SB_LOC 0xFF01
-#define SC_LOC 0xFF02
+#define SCY_LOC 0xFF42               // scroll y 
+#define SCX_LOC 0xFF43               // scroll x
+#define LY_LOC 0xFF44                // current scanline y value
+#define LYC_LOC 0xFF45               // scanline compare register
+#define JOYP_LOC 0xFF00              // joypad input
+#define BG_PALETTE_LOC 0xFF47        // background palette 
+#define OBP0_LOC 0xFF48              // sprite palette 2
+#define OBP1_LOC 0xFF49              // sprite palette 1
+#define WX_LOC 0xFF4B                  // start of window x
+#define WY_LOC 0xFF4A                  // start of window y
+#define SB_LOC 0xFF01                // serial buffer
+#define SC_LOC 0xFF02                // serial control
+#define OAM_DMA_LOC 0xFF46               // OAM DMA start loc
 typedef struct Memory {
     uint8_t wram[WRAM_SIZE];         // work ram
     uint8_t eram[EXTERNAL_RAM_SIZE]; // external ram
@@ -60,7 +76,12 @@ typedef struct Memory {
     uint8_t scroll_y;          // SCY (R/W located on 0xFF42)
     uint8_t scroll_x;          // SCX (R/W located on 0xFF43)
     uint8_t current_scan_line; // LY  (R located on 0xFF44)
+    uint8_t lyc;               // LYC (used for ly compare interrupts)
     uint8_t background_palette; // (W located on 0xFF47)
+    uint8_t obp0;              // OBP0 object palette 0 (located on 0xFF48) 
+    uint8_t obp1;              // OBP1 object palette 1 (located on 0xFF49) 
+    uint8_t wx;                // window x position + 7
+    uint8_t wy;                // window y position
     
     // 
     uint8_t sb;  //SB serial transfer data    (located on 0xFF01)

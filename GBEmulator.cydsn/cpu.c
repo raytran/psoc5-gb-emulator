@@ -570,21 +570,21 @@ int tick(Cpu* cpu){
         cpu->reg.ime = false;
         cycles_taken += 5;   // takes an additional 5 cycles to service interrupt
         // service the interrupt
-        if (active_interrupts & VBLANK_INTERRUPT_REG_MASK) {
+        if (active_interrupts & INTERRUPT_ENABLE_VBLANK_MASK) {
             rst_vec(cpu, VBLANK_ISR_LOC);
-            cpu->mem->interrupt_flag &= ~VBLANK_INTERRUPT_REG_MASK;
-        } else if (active_interrupts & LCD_STAT_INTERRUPT_REG_MASK) {
+            cpu->mem->interrupt_flag &= ~INTERRUPT_ENABLE_VBLANK_MASK;
+        } else if (active_interrupts & INTERRUPT_ENABLE_STAT_MASK) {
             rst_vec(cpu, LCD_STAT_ISR_LOC);
-            cpu->mem->interrupt_flag &= ~LCD_STAT_INTERRUPT_REG_MASK;
-        } else if (active_interrupts & TIMER_INTERRUPT_REG_MASK) {
+            cpu->mem->interrupt_flag &= ~INTERRUPT_ENABLE_STAT_MASK;
+        } else if (active_interrupts & INTERRUPT_ENABLE_TIMER_MASK) {
             rst_vec(cpu, TIMER_ISR_LOC);
-            cpu->mem->interrupt_flag &= ~TIMER_INTERRUPT_REG_MASK;
-        } else if (active_interrupts & SERIAL_INTERRUPT_REG_MASK) {
+            cpu->mem->interrupt_flag &= ~INTERRUPT_ENABLE_TIMER_MASK;
+        } else if (active_interrupts & INTERRUPT_ENABLE_SERIAL_MASK) {
             rst_vec(cpu, SERIAL_ISR_LOC);
-            cpu->mem->interrupt_flag &= ~SERIAL_INTERRUPT_REG_MASK;
-        } else if (active_interrupts & JOYPAD_INTERRUPT_REG_MASK) {
+            cpu->mem->interrupt_flag &= ~INTERRUPT_ENABLE_SERIAL_MASK;
+        } else if (active_interrupts & INTERRUPT_ENABLE_JOYPAD_MASK) {
             rst_vec(cpu, JOYPAD_ISR_LOC);
-            cpu->mem->interrupt_flag &= ~JOYPAD_INTERRUPT_REG_MASK;
+            cpu->mem->interrupt_flag &= ~INTERRUPT_ENABLE_JOYPAD_MASK;
         }
     }
     

@@ -19,6 +19,7 @@ This file contains precompiler definitions that change the function of the emula
  
 // ROM list
 #define TETRIS 0
+// CPU Test ROMS
 #define TEST_ROM_CPU_INSTRS_1_SPECIAL 1             // Passed
 #define TEST_ROM_CPU_INSTRS_2_INTERRUPTS 2          // Fail
 #define TEST_ROM_CPU_INSTRS_3_OP_SP_HL 3            // Passed
@@ -30,6 +31,9 @@ This file contains precompiler definitions that change the function of the emula
 #define TEST_ROM_CPU_INSTRS_9_OP_R_R 9              // Passed
 #define TEST_ROM_CPU_INSTRS_10_BIT_OPS 10           // Passed
 #define TEST_ROM_CPU_INSTRS_11_OP_A_MHL 11          // Passed
+// Display Test ROMS
+#define TEST_DMG_ACID_2 12                          // Passed
+#define TEST_WINDOW_SCROLLING 13
     
 #define CUSTOM_TEST 99
 // ROM selection
