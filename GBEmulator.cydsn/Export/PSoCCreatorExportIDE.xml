@@ -49,6 +49,7 @@
           <File BuildType="BUILD" Toolchain="">gpu.c</File>
           <File BuildType="BUILD" Toolchain="">debugfuncs.c</File>
           <File BuildType="BUILD" Toolchain="">mmio.c</File>
+          <File BuildType="BUILD" Toolchain="">timer.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">registers.h</File>
           <File BuildType="BUILD" Toolchain="">memory.h</File>
@@ -62,6 +63,7 @@
           <File BuildType="BUILD" Toolchain="">debugfuncs.h</File>
           <File BuildType="BUILD" Toolchain="">emumode.h</File>
           <File BuildType="BUILD" Toolchain="">mmio.h</File>
+          <File BuildType="BUILD" Toolchain="">timer.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\Generated_Source\PSoC5">

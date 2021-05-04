@@ -10,6 +10,7 @@ typedef struct Cpu {
     bool inBios;
 } Cpu;
 
+void setup_cpu(Cpu* cpu, Memory* mem);
 // Handles one round of fetch/decode/execute
 // Returns the number of machine cycles taken for the instruction
 // 4 clock cycles == 1 machine cycle

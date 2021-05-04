@@ -55,11 +55,15 @@
 #define BG_PALETTE_LOC 0xFF47        // background palette 
 #define OBP0_LOC 0xFF48              // sprite palette 2
 #define OBP1_LOC 0xFF49              // sprite palette 1
-#define WX_LOC 0xFF4B                  // start of window x
-#define WY_LOC 0xFF4A                  // start of window y
+#define WX_LOC 0xFF4B                // start of window x
+#define WY_LOC 0xFF4A                // start of window y
 #define SB_LOC 0xFF01                // serial buffer
 #define SC_LOC 0xFF02                // serial control
-#define OAM_DMA_LOC 0xFF46               // OAM DMA start loc
+#define OAM_DMA_LOC 0xFF46           // OAM DMA start loc
+#define TIMER_DIV_LOC 0xFF04         // timer divider loc
+#define TIMER_COUNTER_LOC 0xFF05     // TIMA timer counter 
+#define TIMER_MODULO_LOC 0xFF06      // TMA timer modulo (reload value)
+#define TIMER_CONTROL_LOC 0xFF07      // TAC timer control register
 typedef struct Memory {
     uint8_t wram[WRAM_SIZE];         // work ram
     uint8_t eram[EXTERNAL_RAM_SIZE]; // external ram
@@ -83,11 +87,17 @@ typedef struct Memory {
     uint8_t wx;                // window x position + 7
     uint8_t wy;                // window y position
     
-    // 
+    // Serial communication
     uint8_t sb;  //SB serial transfer data    (located on 0xFF01)
     uint8_t sc;  //SC serial transfer control (located on 0xFF02)
     // Joypad
     uint8_t joyp;              //Joypad register located on 0xFF00;
+    
+    // Timer
+    uint8_t timer_divider;     // Timer divider DIV
+    uint8_t timer_counter;     // Timer counter TIMA
+    uint8_t timer_modulo;      // Timer Modulo TMA
+    uint8_t timer_control;     // Timer Control TAC
 } Memory;
 // Fetch a byte from memory
 uint8_t fetch(Memory* memory, uint16_t address, bool inBios);

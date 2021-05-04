@@ -12,7 +12,6 @@
 #include <project.h>
 #include "cpu.h"
 #include "stdio.h"
-
 #include "rom.h"
 #include "GUI.h"
 #include "gpu.h"
@@ -20,18 +19,19 @@
 #include "debugfuncs.h"
 #include "emumode.h"
 #include "mmio.h"
+#include "timer.h"
 
 
 Cpu cpu;
 Gpu gpu;
 Memory mem;
 Mmio mmio;
+Timer timer;
+
 unsigned long total_cycles = 0;
 unsigned long total_instrs = 0;
 char buffer[500];
-
 double seconds = 0;
-
 
 CY_ISR(Timer_1_Handler){
     /*
@@ -49,7 +49,7 @@ CY_ISR(Timer_1_Handler){
 }
 
 bool debug_trace_through_serial_on = false;
-void tick_all(){
+static inline void tick_all(){
     if (DEBUG_MODE && DEBUG_TRACE_THROUGH_SERIAL){
         if (debug_trace_through_serial_on || cpu.reg.pc >= DEBUG_TRACE_THROUGH_SERIAL_BREAKPOINT){
             debug_trace_through_serial_on = true;
@@ -63,6 +63,7 @@ void tick_all(){
     }
     tick_mmio(&mmio);
     tick_gpu(&gpu, cycles_taken);
+    tick_timer(&timer, cycles_taken);
     total_cycles += cycles_taken;
     total_instrs++;
 }
@@ -85,9 +86,10 @@ int main()
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
 
                 
-        
-    button_press_1_StartEx(button_press_1_handler);
-    
+    if (DEBUG_MODE){
+        button_press_1_StartEx(button_press_1_handler);
+    }
+
     SPIM_1_Start(); 
     SPIM_1_ClearFIFO();
     UART_1_Start();
@@ -131,11 +133,11 @@ int main()
 
     }
     
-    cpu.mem = &mem;
+    
+    setup_cpu(&cpu, &mem);
     setup_mmio(&mmio, &mem);
     setup_gpu(&gpu, &mem);
-  
-    reset_cpu(&cpu);
+    setup_timer(&timer, &mem);
     reset_memory(&mem);
     cpu.inBios = START_IN_BIOS;
     

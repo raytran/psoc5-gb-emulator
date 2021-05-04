@@ -42,22 +42,22 @@ void tick_mmio(Mmio* mmio) {
     //Bit 0 - P10 Input: Right or A        (0=Pressed) (Read Only)
     //uint8_t selected = fetch(mmio->mem, 0xFF00, false);
     uint8_t selected = mmio->mem->joyp;
-    uint8_t to_write = 0;
+    uint8_t to_write = selected & 0x30;
     if (((selected >> 5) & 0b1) == 0) {
         // action button selected
         // direction button selected
-        to_write |= !a_pushed;
-        to_write |= (!b_pushed) << 1;
-        to_write |= (!select_pushed) << 2;
-        to_write |= (!start_pushed) << 3;
+        to_write |= (!a_pushed) & 0b1;
+        to_write |= ((!b_pushed) << 1) & 0b10;
+        to_write |= ((!select_pushed) << 2) & 0b100;
+        to_write |= ((!start_pushed) << 3) & 0b1000;
         //write_mem(mmio->mem, 0xFF00, to_write);
         mmio->mem->joyp = to_write;
     } else if (((selected >> 4) & 0b1) == 0) {
         // direction button selected
-        to_write |= !right_pushed;
-        to_write |= (!left_pushed) << 1;
-        to_write |= (!up_pushed) << 2;
-        to_write |= (!down_pushed) << 3;
+        to_write |= (!right_pushed) & 0b1;
+        to_write |= ((!left_pushed) << 1) & 0b10;
+        to_write |= ((!up_pushed) << 2) & 0b100;
+        to_write |= ((!down_pushed) << 3) & 0b1000;
         //write_mem(mmio->mem, 0xFF00, to_write);
         mmio->mem->joyp = to_write;
     } else {

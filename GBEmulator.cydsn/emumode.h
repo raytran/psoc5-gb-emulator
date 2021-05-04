@@ -4,7 +4,7 @@ This file contains precompiler definitions that change the function of the emula
 #ifndef EMU_MODE_H
 #define EMU_MODE_H
 
-#define GB_SERIAL_PASSTHROUGH false        // whether or not to pass through GB serial 
+#define GB_SERIAL_PASSTHROUGH true        // whether or not to pass through GB serial 
     
 #define DEBUG_MODE false
     
@@ -41,5 +41,9 @@ This file contains precompiler definitions that change the function of the emula
 #define ROM TETRIS
 
     
+    
 #define START_IN_BIOS true
+#define CUSTOM_BIOS 0
+#define ORIGINAL_BIOS 1
+#define BIOS CUSTOM_BIOS
 #endif

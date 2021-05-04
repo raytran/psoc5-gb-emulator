@@ -4,6 +4,13 @@
 #include "cpu.h"
 #include "instruction_set.h"
 
+
+void setup_cpu(Cpu* cpu, Memory* mem) {
+    cpu->mem = mem;
+    reset_cpu(cpu);
+    
+}
+
 void reset_cpu(Cpu* cpu) {
     cpu->inBios = true;
     reset_registers(&cpu->reg);

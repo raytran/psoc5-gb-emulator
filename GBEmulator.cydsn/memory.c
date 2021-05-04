@@ -101,10 +101,16 @@ uint8_t fetch(Memory* memory, uint16_t address, bool inBios){
                 return memory->obp1;
             case WX_LOC:
                 return memory->wx;
-            break;
             case WY_LOC:
                 return memory->wy;
-            break;
+            case TIMER_DIV_LOC:
+                return memory->timer_divider;
+            case TIMER_COUNTER_LOC:
+                return memory->timer_counter;
+            case TIMER_MODULO_LOC:
+                return memory->timer_modulo;
+            case TIMER_CONTROL_LOC:
+                return memory->timer_control;
             default: break;
         }
     
@@ -183,6 +189,20 @@ void write_mem(Memory* memory, uint16_t address, uint8_t data) {
             break;
             case JOYP_LOC:
             memory->joyp = data;
+            break;
+            case TIMER_DIV_LOC:
+            //memory->timer_divider = data;
+            // the DIV gets reset to 0 whenever it is written to
+            memory->timer_divider = 0;
+            break;
+            case TIMER_COUNTER_LOC:
+            memory->timer_counter = data;
+            break;
+            case TIMER_MODULO_LOC:
+            memory->timer_modulo = data;
+            break;
+            case TIMER_CONTROL_LOC:
+            memory->timer_control = data;
             break;
             default: break;
         }
