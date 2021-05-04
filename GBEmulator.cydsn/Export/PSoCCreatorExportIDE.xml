@@ -48,6 +48,7 @@
           <File BuildType="BUILD" Toolchain="">tft.c</File>
           <File BuildType="BUILD" Toolchain="">gpu.c</File>
           <File BuildType="BUILD" Toolchain="">debugfuncs.c</File>
+          <File BuildType="BUILD" Toolchain="">mmio.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">registers.h</File>
           <File BuildType="BUILD" Toolchain="">memory.h</File>
@@ -60,6 +61,7 @@
           <File BuildType="BUILD" Toolchain="">gpu.h</File>
           <File BuildType="BUILD" Toolchain="">debugfuncs.h</File>
           <File BuildType="BUILD" Toolchain="">emumode.h</File>
+          <File BuildType="BUILD" Toolchain="">mmio.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\Generated_Source\PSoC5">
@@ -164,6 +166,39 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\UART_1_BOOT.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\UART_1_IntClock.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\UART_1_IntClock.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button_Status.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button_Status.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button2_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button2.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button2.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_X.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_X.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_X_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_X_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\JoyX_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\JoyX.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\JoyX.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\JoyY_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\JoyY.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\JoyY.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_Y.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_Y.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_Y_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_Y_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_X_IRQ.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_X_IRQ.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_X_theACLK.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_X_theACLK.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_Y_IRQ.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_Y_IRQ.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_Y_theACLK.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_JOY_Y_theACLK.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\JoySW_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\JoySW.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\JoySW.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button3_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button3.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Button3.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="D:\personal\6115\6115FP_GBEmulator\GBEmulator.cydsn\Export\ARM_GCC_Generic">

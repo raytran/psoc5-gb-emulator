@@ -12,13 +12,14 @@ This file contains precompiler definitions that change the function of the emula
 #define DEBUG_TRACE_THROUGH_SERIAL false    // enable trace mode over serial 
 #define DEBUG_TRACE_THROUGH_SERIAL_BREAKPOINT 0x0100   // where to start serial trace
     
-#define DEBUG_BREAKPOINT_ON true
+#define DEBUG_BREAKPOINT_ON false
 #define DEBUG_BREAKPOINT 0x0100
 #define DEBUG_MEMORY_DISPLAY_LOC 0x9800
 #define DEBUG_SHOW_VRAM_ON_BUTTON false
  
 // ROM list
 #define TETRIS 0
+#define DR_MARIO 14
 // CPU Test ROMS
 #define TEST_ROM_CPU_INSTRS_1_SPECIAL 1             // Passed
 #define TEST_ROM_CPU_INSTRS_2_INTERRUPTS 2          // Fail

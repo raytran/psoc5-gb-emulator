@@ -19,12 +19,13 @@
 #include "tft.h"
 #include "debugfuncs.h"
 #include "emumode.h"
-
+#include "mmio.h"
 
 
 Cpu cpu;
 Gpu gpu;
 Memory mem;
+Mmio mmio;
 unsigned long total_cycles = 0;
 unsigned long total_instrs = 0;
 char buffer[500];
@@ -60,6 +61,7 @@ void tick_all(){
     if (cpu.inBios){
         cpu.inBios = (fetch(&mem, 0xFF50, cpu.inBios) == 0);
     }
+    tick_mmio(&mmio);
     tick_gpu(&gpu, cycles_taken);
     total_cycles += cycles_taken;
     total_instrs++;
@@ -89,6 +91,13 @@ int main()
     SPIM_1_Start(); 
     SPIM_1_ClearFIFO();
     UART_1_Start();
+    
+    
+    ADC_JOY_X_Start();
+    ADC_JOY_Y_Start();
+    ADC_JOY_Y_StartConvert();
+    ADC_JOY_X_StartConvert();
+    
     CyDelay(500);
     UART_1_PutString("Hello from the PSOC GB Emulator\r\n");
     if (DEBUG_MODE){
@@ -122,10 +131,10 @@ int main()
 
     }
     
-
-    setup_gpu(&gpu, &mem);
     cpu.mem = &mem;
-
+    setup_mmio(&mmio, &mem);
+    setup_gpu(&gpu, &mem);
+  
     reset_cpu(&cpu);
     reset_memory(&mem);
     cpu.inBios = START_IN_BIOS;

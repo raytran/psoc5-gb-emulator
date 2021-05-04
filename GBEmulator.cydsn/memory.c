@@ -6,6 +6,17 @@
 #include "stdbool.h"
 #include "emumode.h"
 
+// Emulates a dma transfer
+static void start_dma(Memory* mem, uint8_t xx){
+    // Source:      $XX00-$XX9F   ;XX = $00 to $DF
+    // Destination: $FE00-$FE9F
+    uint16_t source = xx << 8;
+    int i;  // copy 160 bytes
+    for (i=0;i<160;i++){
+        mem->oam[i] = fetch(mem, source + i, false);
+    }
+}
+
 void reset_memory(Memory* memory){
     int i;
     for (i=0;i<WRAM_SIZE;i++){
@@ -166,6 +177,12 @@ void write_mem(Memory* memory, uint16_t address, uint8_t data) {
             break;
             case WY_LOC:
             memory->wy = data;
+            break;
+            case OAM_DMA_LOC:
+            start_dma(memory, data);
+            break;
+            case JOYP_LOC:
+            memory->joyp = data;
             break;
             default: break;
         }

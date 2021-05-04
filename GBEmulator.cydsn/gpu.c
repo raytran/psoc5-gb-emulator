@@ -182,7 +182,6 @@ void renderLine(Gpu* gpu, Memory* mem){
         
         int i;
         int x = 0;
-        bool window_start = false;
         for (i=0;i<DISPLAY_WIDTH/8;i++){    //DISPLAY_WIDTH/8 = 20 total tiles on the line
             // Which tile are we on?
             uint8_t tile_id_u8 = mem->vram[bgmap_row_start + ((i + mem->scroll_x/8) & 0x1F)];
